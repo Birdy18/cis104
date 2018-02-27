@@ -97,7 +97,7 @@ function movieMenu() {
 
 function displayMovies() {
     for(let movie of movies) {
-        console.log(movie.display());
+        console.log(movie);
     }
 }
 
