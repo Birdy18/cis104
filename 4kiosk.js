@@ -38,9 +38,12 @@ class Movie {
     }
 
     addRating() {
+        let minStars = 0, maxStars = 5;
         let rating = Number(PROMPT.question("Rate " + this.title + " 0-5 stars."));
-        if(badrating) {
-            //Enter your stuff here
+        if(isNaN(rating) || rating < minStars || rating > maxStars ) {
+            console.log("Error, not a valid input!");
+            PROMPT.question("Press Enter to continue");
+            console.clear();
         }
         let new_rating = new Rating(currentUser, rating);
         this.ratings.push(new_rating);
@@ -73,7 +76,19 @@ function main() {
         movieMenu();
     }
     return;
+
+    let whileResult = 1;
+    while(whileResult ===1) {
+        try {
+            whileResult = movieManager();
+        }
+
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
+
 
 main();
 // Section 4: Helper functions
@@ -123,7 +138,6 @@ function displayMenu() {
 }
 
 function movieManager() {
-   // console.clear();
     displayMenu();
     let option = PROMPT.question("Choice: ");
     if (!ACTION_MENU.has(option)) {
