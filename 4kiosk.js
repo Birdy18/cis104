@@ -4,55 +4,141 @@
  * Purpose: Run a kiosk at a movie theater
  */
 
+//Section 1: Pragma and Requirements
 "Use strict";
 const PROMPT = require("readline-sync");
 
-let continueResponse;
-let ratings = [];
+// Section 2: Global variables and classes
+let movies = [];
+let currentUser;
+let runProgram = 1;
+let movieDir = new Map();
+let ourMovies = ["Star Wars", "My Little Pony",
+    "Andrew'Rocky' and Bullwinkle", "Arceus and the Jewel of Life"];
 
-/**
- * @method
- * @desc The dispatch method for our program
- * @returns {null}
- */
+const ACTION_MENU = new Map()
+    .set('1',["Add Rating", addRating])
+    .set('2',["Display Average Ratings", displayAverages ])
+    .set('3',["Exit", setExit ]);
+
+class Rating {
+    constructor(user, rating) {
+        this.user = user;
+        this.rating = rating;
+    }
+}
+
+class Movie {
+    constructor(title) {
+        this.title = title;
+        this.ratings = [];
+    }
+    toString() {
+        return this.title + this.ratings.toString();
+    }
+
+    addRating() {
+        let rating = Number(PROMPT.question("Rate " + this.title + " 0-5 stars."));
+        if(badrating) {
+            //Enter your stuff here
+        }
+        let new_rating = new Rating(currentUser, rating);
+        this.ratings.push(new_rating);
+    }
+
+    display() {
+
+    }
+
+    get numRatings() {
+        return this.ratings.length;
+    }
+
+    get averageRating() {
+        let total = 0;
+        for(let i of this.ratings) {
+            total += i.rating;
+        }
+        return total / this.ratings.length;
+    }
+}
+
+
+// Section 3: program flow
 
 function main() {
-    if (continueResponse !== 0 && continueResponse !== 1) {
-        setContinueResponse();
+    initMovies();
+    login();
+    while(runProgram) {
+        movieMenu();
     }
-    populateRatings();
-    while (continueResponse === 1) {
-        setContinueResponse();
-    }
+    return;
 }
 
 main();
+// Section 4: Helper functions
 
-/**
- * @method
- * @desc continueResponse
- * @returns {null}
- */
-
-function setContinueResponse() {
-    if (continueResponse === 1 || continueResponse === 0 ) {
-        continueResponse = Number(PROMPT.question('\nWould you like to continue {0==no, 1==yes }'));
-            while (continueResponse !== 1 && continueResponse !== 0) {
-                console.log('${continueResponse} is not a valid function, please try again');
-                continueResponse = Number(PROMPT.question('\nWould you like to continue? {0==no , 1==yes'));
-            }
-    } else {
-        continueResponse = 1;
+function initMovies() {
+    for(let i of ourMovies) {
+        let new_movie = new Movie(i);
+        movies.push(new_movie);
+        movieDir.set(i, new_movie);
     }
 }
 
-/**
- * @method
- * @desc rating array mutator
- * @returns {void}
- */
+function login() {
+    currentUser = PROMPT.question('\nWhat is your username?')
+}
 
-function populateRatings() {
-    const MIN_STARS = 0, MAX_STARS = 5;
-    for (let i = 0)
+function movieMenu() {
+    displayMovies();
+    movieManager();
+}
+
+function displayMovies() {
+    for(let movie of movies) {
+        console.log(movie.display());
+    }
+}
+
+function displayAverages() {
+    let movie = chooseMovie();
+    console.log(movie.averageRating)
+}
+
+function chooseMovie() {
+    let movie = Number(PROMPT.question("What movie do you want to review? Use ID! (1-" + movies.length + "): "));
+    if(movie-1 < 0 || movie > movies.length || isNaN(movie)) {
+        console.log("ERROR: Pick a proper movie ID!");
+    }
+    return movies[movie-1];
+}
+
+function displayMenu() {
+    let output = "";
+    for (let key of ACTION_MENU.keys()) {
+        output += key + ": " + ACTION_MENU.get(key)[0] +'\n';
+    }
+    console.log(output);
+}
+
+function movieManager() {
+   // console.clear();
+    displayMenu();
+    let option = PROMPT.question("Choice: ");
+    if (!ACTION_MENU.has(option)) {
+        //console.clear();
+        console.log("This is not a valid choice, try again!");
+        return;
+    }
+    ACTION_MENU.get(option)[1]();
+}
+
+function setExit() {
+    runProgram = 0;
+}
+
+function addRating() {
+    let movie = chooseMovie();
+    movie.addRating();
 }
