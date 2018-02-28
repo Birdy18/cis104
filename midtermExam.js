@@ -9,38 +9,60 @@ const PROMPT = require('readline-sync');
 
 let base = 1000.00;
 
-let currentUser;
+let login, account, Withdrawl,transferAccount;
+let accounts = new Map();
 let runProgram = 1;
-let cardName, number, PIN, accountAmount, transferAccount;
-let Withdrawl,Deposit, Transfer, Inquire, Exit;
+let error = 0;
+let maxError = 3;
+const accountPopulate = [
+    [1, "Trevor Birdsall",1998,base],
+    [2, "Rocky",4000,base],
+    [3, "Jiminy Cricket",1556,base]
+];
 
 const ATM_MENU = new Map()
-    .set ('A',["Withdrawl",displayWithdrawl] )
-    .set ('B',["Deposit",renderDeposit ])
-    .set ('C',["Transfer",transferFunds])
-    .set ('E',["Exit", setExit]);
+    .set('A',["Withdrawl",displayWithdrawl] )
+    .set('B',["Deposit",renderDeposit ])
+    .set('C',["Transfer",transferFunds])
+    .set('E',["Exit", setExit]);
 
 class Account {
-    constructor(cardName, number, PIN) {
+    constructor(id, cardName, number, PIN) {
+        this.id = id;
         this.cardName = cardName;
         this.number = number;
         this.PIN = PIN;
         this.funds = base;
-        this.fails = 3;
 }
     addAccount() {
         let account = PROMPT.question('\nType in your account');
         let new_account = new Account(cardName, number, PIN);
         this.account.push(new_account);
     }
+    toString() {
+        return this.cardName + this.number + this.PIN + this.funds.toString();
+    }
+
+    login(cardName, number, PIN) {
+        account = this.account.get(cardName);
+        if(!this.account.has(cardName)) {
+            return false;
+        }
+        if(account.number != cardName) {
+            return false;
+        }
+        if(account.PIN != cardname || account.PIN != number) {
+            return false;
+        }
+    }
+
     PINCheck(checkPIN) {
         if(this.PIN === checkPIN) {
             return true;
         }
-        this.fails++;
         return false;
     }
-    withdrawl(amount) {
+    withdrawal(amount) {
         if(amount > this.funds) {
             console.log("Not the right amount of funds! ")
         }
@@ -58,9 +80,9 @@ class Account {
 }
 
 function main() {
-    console.clear();
-   while(runProgram) {
-        displayATMMenu();
+    loadATM();
+    while(runProgram) {
+       activateATM();
     }
     console.log("Come back soon! ");
     return;
@@ -68,32 +90,74 @@ function main() {
 
 main();
 
+function loadATM() {
+    for(let account of accountPopulate) {
+        accounts.set(account[0], new Account(account[0],account[1], account[2], account[3]));
+    }
+}
+
+function runLogin() {
+    let id =Number(PROMPT.question('\nPlease type in your ID.'));
+    let name = PROMPT.question('Please enter in your name');
+    let numPIN = Number(PROMPT.question('\nPlease enter your PIN number.'));
+    if (!accounts.has(id)) {
+        console.log('ERROR INVALID CREDENTIALS!');
+        return;
+    if (!accounts.has(name)) {
+        console.log('ERROR INVALID CREDENTIALS!');
+        return;
+        }
+    if (!accounts.has(numPIN)) {
+        consle.log('ERROR INVALID CREDENTIALS!');
+        return;
+        }
+    }
+    let acc = accounts.get(id);
+    if (accounts.login(id, name, numPIN)) {
+        let login = acc;
+    } else {
+        error ++;
+        if (error === maxError) {
+            console.log('ERROR: TOO MANY ERRORS!');
+            runProgram = 0;
+            return;
+        }
+    }
+
+
+    // Run the login check. IF SUCCESSFUL, get the account object from accounts, set login = the retrieved account!
+}
+
+function activateATM() {
+    if(!login) {
+        runLogin();
+        return;
+    }
+    displayATMMenu();
+}
 
 function displayATMMenu() {
     let output = "";
     for (let key of ATM_MENU.keys()) {
         output += key + ": " + ATM_MENU.get(key)[0] +'\n';
     }
-    if(!output.length > 0) {
-        return '(No Reviews Availible)';
-    }
-    let choice = PROMPT.question("Please choose a Choice: ",true);
+    let choice = PROMPT.question("Please choose a Choice: ").toUpperCase();
 
-    if (! ATM_MENU.has(choice)) {
-        console.log("Not a valid choice, please try again!")
+    if (! output.length > 0) {
+        return "";
     }
-    ATM_MENU.get(choice)[1]();
+    console.log(output);
 
 }
 
 function ATMManager() {
     displayATMMenu();
     let option = PROMPT.question("Choice: ");
-    if (!ATM_MENU.has(option)) {
+    if (!ATM_MENU.has(choice)) {
         console.log('\nThis is not a valid menu choice');
         return;
     }
-    ATM_MENU.get(choice)[1]();
+    ATM_MENU.get(choice)[0]();
 }
 
 function displayWithdrawl() {
@@ -103,10 +167,6 @@ function displayWithdrawl() {
 function renderDeposit() {
     let amount = PROMPT.question('\nHow much do you wish to deposit ');
     userAccount.deposit(amount);
-}
-function accountID() {
-    accountID = PROMPT.question("Please enter your ID ");
-    accountAmount = PROMPT.getNumber("Enter how much you want to transfer");
 }
 
 function transferFunds() {
