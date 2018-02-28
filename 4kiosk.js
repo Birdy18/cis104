@@ -32,6 +32,7 @@ class Movie {
     constructor(title) {
         this.title = title;
         this.ratings = [];
+
     }
     toString() {
         return this.title + this.ratings.toString();
@@ -102,6 +103,7 @@ function initMovies() {
 }
 
 function login() {
+    console.clear();
     currentUser = PROMPT.question('\nWhat is your username?')
 }
 
@@ -111,7 +113,7 @@ function movieMenu() {
 }
 
 function displayMovies() {
-    for(let movie of movies) {
+    for (let movie of movies) {
         console.log(movie);
     }
 }
@@ -133,6 +135,9 @@ function displayMenu() {
     let output = "";
     for (let key of ACTION_MENU.keys()) {
         output += key + ": " + ACTION_MENU.get(key)[0] +'\n';
+    }
+    if(!output.length > 0) {
+        return '(No Reviews Availible)';
     }
     console.log(output);
 }
