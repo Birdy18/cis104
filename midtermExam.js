@@ -7,35 +7,34 @@
 "use strict";
 const PROMPT = require('readline-sync');
 
+let wallet = 500.00;
 let base = 1000.00;
-
-let login, account, Withdrawl,transferAccount;
+let login, account;
 let accounts = new Map();
 let runProgram = 1;
-let error = 0;
+let errorCount = 0;
 let maxError = 3;
 const accountPopulate = [
-    [1, "Trevor Birdsall",1998,base],
-    [2, "Rocky",4000,base],
-    [3, "Jiminy Cricket",1556,base]
+    [1, "Trevor Birdsall",base,1998],
+    [2, "Rocky",base,4000],
+    [3, "Jiminy Cricket",base,1556]
 ];
 
 const ATM_MENU = new Map()
-    .set('A',["Withdrawl",displayWithdrawl] )
-    .set('B',["Deposit",renderDeposit ])
-    .set('C',["Transfer",transferFunds])
+    .set('A',["Withdrawl",doWithdrawal] )
+    .set('B',["Deposit",doDeposit ])
+    .set('C',["Transfer",doTransfer])
     .set('E',["Exit", setExit]);
 
 class Account {
-    constructor(id, cardName, number, PIN) {
+    constructor(id, cardName, balance, PIN) {
         this.id = id;
         this.cardName = cardName;
-        this.number = number;
+        this.balance = balance;
         this.PIN = PIN;
-        this.funds = base;
 }
     addAccount() {
-        let account = PROMPT.question('\nType in your account');
+        let account = PROMPT.question('\nType in your account', true);
         let new_account = new Account(cardName, number, PIN);
         this.account.push(new_account);
     }
@@ -43,7 +42,7 @@ class Account {
         return this.cardName + this.number + this.PIN + this.funds.toString();
     }
 
-    login(cardName, number, PIN) {
+    login(id, cardName, number, PIN) {
         account = this.account.get(cardName);
         if(!this.account.has(cardName)) {
             return false;
@@ -54,28 +53,34 @@ class Account {
         if(account.PIN != cardname || account.PIN != number) {
             return false;
         }
+        return true;
     }
 
-    PINCheck(checkPIN) {
-        if(this.PIN === checkPIN) {
+    PINCheck(numPIN) {
+        if(this.PIN === numPIN) {
             return true;
         }
         return false;
     }
     withdrawal(amount) {
-        if(amount > this.funds) {
-            console.log("Not the right amount of funds! ")
+        if(amount > this.balance) {
+            console.log("Not the right amount of funds! ");
+            return;
         }
-        this.amount -= amount;
-        return this.funds;
+        this.balance -= amount;
+        return true;
     }
     deposit(amount) {
-        this.funds += amount;
-        return this.funds;
+        this.balance += amount;
+        return true;
     }
-    transfer(destination, source, funds) {
+    transfer(destination, amount) {
+        if(!this.withdrawal(amount)) {
+            console.log("Can not transfer, too much funds! ");
+            return;
+        }
         destination.deposit(amount);
-        source.withdrawl(amount);
+
     }
 }
 
@@ -97,35 +102,41 @@ function loadATM() {
 }
 
 function runLogin() {
-    let id =Number(PROMPT.question('\nPlease type in your ID.'));
-    let name = PROMPT.question('Please enter in your name');
-    let numPIN = Number(PROMPT.question('\nPlease enter your PIN number.'));
+    if (errorCount >= maxError) {
+        console.log("TOO MANY ERRORS.");
+        runProgram = 0;
+        return;
+    }
+
+    let id = Number(PROMPT.question('\nPlease type in your ID: '));
+    let name = PROMPT.question('Please enter in your name: ');
+    let numPIN = Number(PROMPT.question('\nPlease enter your PIN number: '));
+
     if (!accounts.has(id)) {
         console.log('ERROR INVALID CREDENTIALS!');
+        errorCount++;
         return;
-    if (!accounts.has(name)) {
+    }
+
+    let foundAccount = accounts.get(id);
+
+    if (!foundAccount.name === name) {
         console.log('ERROR INVALID CREDENTIALS!');
+        errorCount++;
         return;
-        }
-    if (!accounts.has(numPIN)) {
-        consle.log('ERROR INVALID CREDENTIALS!');
+    }
+    if (!foundAccount.PINCheck(numPIN)) {
+        console.log('ERROR INVALID CREDENTIALS!');
+        errorCount++;
         return;
-        }
     }
-    let acc = accounts.get(id);
-    if (accounts.login(id, name, numPIN)) {
-        let login = acc;
-    } else {
-        error ++;
-        if (error === maxError) {
-            console.log('ERROR: TOO MANY ERRORS!');
-            runProgram = 0;
-            return;
-        }
-    }
+    login = foundAccount;
 
+}
 
-    // Run the login check. IF SUCCESSFUL, get the account object from accounts, set login = the retrieved account!
+function runLogout() {
+    login = 0;
+    return;
 }
 
 function activateATM() {
@@ -133,7 +144,7 @@ function activateATM() {
         runLogin();
         return;
     }
-    displayATMMenu();
+    ATMManager();
 }
 
 function displayATMMenu() {
@@ -141,39 +152,61 @@ function displayATMMenu() {
     for (let key of ATM_MENU.keys()) {
         output += key + ": " + ATM_MENU.get(key)[0] +'\n';
     }
-    let choice = PROMPT.question("Please choose a Choice: ").toUpperCase();
-
-    if (! output.length > 0) {
-        return "";
-    }
     console.log(output);
-
+    console.log("Account Balance: $" + login.balance);
+    console.log("Your Wallet: $" + wallet);
 }
 
 function ATMManager() {
     displayATMMenu();
-    let option = PROMPT.question("Choice: ");
-    if (!ATM_MENU.has(choice)) {
+    let option = PROMPT.question("Choice: ").toUpperCase();
+    if (!ATM_MENU.has(option)) {
         console.log('\nThis is not a valid menu choice');
         return;
     }
-    ATM_MENU.get(choice)[0]();
+    ATM_MENU.get(option)[1]();
 }
 
-function displayWithdrawl() {
-    Withdrawl = base - this.deposit;
+function doWithdrawal() {
+    let amount = Number(PROMPT.question('\nHow much money do you wish to withdraw: '));
+    if(login.withdrawal(amount)) {
+        wallet += amount;
+    }
+    if (isNaN(amount)) {
+        console.log("ERROR, INSUFFICIENT WITHDRAWL AMOUNT")
+        setExit();
+    }
 }
 
-function renderDeposit() {
-    let amount = PROMPT.question('\nHow much do you wish to deposit ');
-    userAccount.deposit(amount);
+function doDeposit() {
+    let amount = Number(PROMPT.question('\nHow much do you wish to deposit:  '));
+    if(amount > wallet) {
+        console.log("Insuffiecent funds");
+        return;
+    }
+    if(isNaN(amount)) {
+        console.log("INVALID DEPOSIT AMOUNT");
+        setExit();
+    }
+    wallet -= amount;
+    login.deposit(amount);
 }
 
-function transferFunds() {
-    accountID();
-    // noinspection JSAnnotator
-    if (transferAccount = bankID.getAccount(accountID) );
-    bankID.doTransfer(transferAccount, accountID, accountAmount);
+function doTransfer() {
+    let id = Number(PROMPT.question('\nPlease type in the destination ID: '));
+    if (!accounts.has(id)) {
+        console.log('ERROR: ACCOUNT NOT FOUND');
+        return login;
+    }
+    let foundAccount = accounts.get(id);
+    let amount = Number(PROMPT.question('\nHow much money do you wish to transfer: '));
+    if (isNaN(amount)) {
+        console.log("ERROR, NOT A VALID INPPUT!");
+        setExit();
+    }
+    login.transfer(foundAccount,amount);
+    console.log(login);
+    console.log(foundAccount);
 }
 
 function setExit() {
