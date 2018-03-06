@@ -104,7 +104,7 @@ function initMovies() {
 
 function login() {
     console.clear();
-    currentUser = PROMPT.question('\nWhat is your username?')
+    currentUser = PROMPT.question('\nWhat is your username? ')
 }
 
 function movieMenu() {
@@ -135,9 +135,6 @@ function displayMenu() {
     let output = "";
     for (let key of ACTION_MENU.keys()) {
         output += key + ": " + ACTION_MENU.get(key)[0] +'\n';
-    }
-    if(!output.length > 0) {
-        return '(No Reviews Availible)';
     }
     console.log(output);
 }
