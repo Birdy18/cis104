@@ -113,14 +113,21 @@ function movieMenu() {
 }
 
 function displayMovies() {
+    console.clear();
+    let i = 1;
     for (let movie of movies) {
-        console.log(movie);
+        console.log(`${i}.`);
+        console.log(movie.title);
+        console.log(`There are ${movie.ratings.length} review(s) for this title.`);
+        console.log();
+        i++;
     }
 }
 
 function displayAverages() {
     let movie = chooseMovie();
-    console.log(movie.averageRating)
+    console.log(` The average rating for ${movie.title} is ${movie.averageRating} stars. `);
+    PROMPT.question("Press enter to continue."); //Freezes screen
 }
 
 function chooseMovie() {
