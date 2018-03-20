@@ -18,7 +18,7 @@ const BLIB = require('./birdlib');
 
 let runProgram = 1;
 const GENRES = ["Classical", "Easy Listening", "Jazz", "Pop", "Rock", "Other"];
-let genresMap = new Map();
+let genres = [];
 
 class MusicGenre {
     constructor(name) {
@@ -28,6 +28,23 @@ class MusicGenre {
     toString() {
         return this.name;
     }
+
+    sumPurchases() {
+        let output = 0;
+        if(!this.purchases.length) {
+            return output;
+        }
+        for (let purchase of this.purchases) {
+            output += purchase;
+        }
+        return output;
+    }
+
+    display() {
+        return `${this.name}: $${this.sumPurchases()}`;
+
+    }
+
 }
 
 function main() {
@@ -44,7 +61,7 @@ main();
 
 function loadApp() {
     for(let genre of GENRES) {
-        genresMap.set(genre.toUpperCase(), new MusicGenre(genre));
+        genres.push(new MusicGenre(genre));
     }
 }
 
@@ -76,17 +93,26 @@ function happyTunes() {
 }
 
 function seeTransaction() {
-    console.log(genresMap);
+    for(let genre of genres) {
+        console.log(genre.display());
+    }
+}
+
+function compareGenres(a, b) {
+    //return b.purchases.length - a.purchases.length;
+    return b.sumPurchases() - a.sumPurchases();
+}
+
+function sortGenres() {
+    genres.sort(compareGenres);
 }
 
 function purchaseMusic() {
     console.log(`Genres: ${GENRES.join(', ')}`);
-    let genre = BLIB.getOption('Choose Genre: ', genresMap.values());
-
+    let genre = BLIB.getOption('Choose Genre: ', genres);
     let purchase = BLIB.getNumber('How much are you going to pay: ');
-
     genre.purchases.push(purchase);
-
+    sortGenres();
 }
 
 function endProgram() {
