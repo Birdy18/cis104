@@ -6,13 +6,12 @@
 
 //Section 1: Pragma and Requirements
 "use strict";
-const PROMPT = require("readline-sync");
+const BLIB = require("./birdlib");
 
 // Section 2: Global variables and classes
 let movies = [];
 let currentUser;
 let runProgram = 1;
-let movieDir = new Map();
 let ourMovies = ["Star Wars", "My Little Pony",
     "Andrew'Rocky' and Bullwinkle", "Arceus and the Jewel of Life"];
 
@@ -35,15 +34,15 @@ class Movie {
 
     }
     toString() {
-        return this.title + this.ratings.toString();
+        return this.title;
     }
 
     addRating() {
         let minStars = 0, maxStars = 5;
-        let rating = Number(PROMPT.question("Rate " + this.title + " 0-5 stars."));
-        if(isNaN(rating) || rating < minStars || rating > maxStars ) {
+        let rating = BLIB.getNumber("Rate " + this.title + " 0-5 stars.");
+        if(rating < minStars || rating > maxStars ) {
             console.log("Error, not a valid input!");
-            PROMPT.question("Press Enter to continue");
+            BLIB.pressEnter();
             console.clear();
         }
         let new_rating = new Rating(currentUser, rating);
@@ -98,13 +97,12 @@ function initMovies() {
     for(let i of ourMovies) {
         let new_movie = new Movie(i);
         movies.push(new_movie);
-        movieDir.set(i, new_movie);
     }
 }
 
 function login() {
     console.clear();
-    currentUser = PROMPT.question('\nWhat is your username? ')
+    currentUser = BLIB.getKeyboard('\nWhat is your username? ');
 }
 
 function movieMenu() {
@@ -127,34 +125,18 @@ function displayMovies() {
 function displayAverages() {
     let movie = chooseMovie();
     console.log(` The average rating for ${movie.title} is ${movie.averageRating} stars. `);
-    PROMPT.question("Press enter to continue."); //Freezes screen
+    BLIB.pressEnter(); //Freezes screen
 }
 
 function chooseMovie() {
-    let movie = Number(PROMPT.question("What movie do you want to review? Use ID! (1-" + movies.length + "): "));
-    if(movie-1 < 0 || movie > movies.length || isNaN(movie)) {
-        console.log("ERROR: Pick a proper movie ID!");
-    }
-    return movies[movie-1];
+    return BLIB.getOption("Choose Movie: ", movies);
 }
 
-function displayMenu() {
-    let output = "";
-    for (let key of ACTION_MENU.keys()) {
-        output += key + ": " + ACTION_MENU.get(key)[0] +'\n';
-    }
-    console.log(output);
-}
 
 function movieManager() {
-    displayMenu();
-    let option = PROMPT.question("Choice: ");
-    if (!ACTION_MENU.has(option)) {
-        //console.clear();
-        console.log("This is not a valid choice, try again!");
-        return;
-    }
-    ACTION_MENU.get(option)[1]();
+    BLIB.displayMenu(ACTION_MENU);
+    let action = ACTION_MENU.get(BLIB.getOption("Choice: ", ACTION_MENU.keys()));
+    action[1]();
 }
 
 function setExit() {

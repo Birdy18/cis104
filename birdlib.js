@@ -58,3 +58,13 @@ function pressEnter() {
 }
 
 exports.pressEnter = pressEnter;
+
+function displayMenu(menuMap) {
+    let output = "";
+    for (let key of menuMap.keys()) {
+        output += key + ": " + menuMap.get(key)[0] +'\n';
+    }
+    console.log(output);
+}
+
+exports.displayMenu = displayMenu;
