@@ -5,15 +5,17 @@ const PROMPT = require('readline-sync');
 let inWeapons = ["Blaster", "Spreader", "Concussion", "Sniper", "Melee", ];
 
 const weaponPopulate = [
-    [Standard, "Blaster", 10, 20 ,25, 3, 4 ],
-    [Bumble Rumble, "Blaster", 15, 30, 25, 3, 4],
+    ["Standard", inWeapons[0], 10, 20 ,25, 3, 4 ],
+    ["Bumble_Rumble", inWeapons[0], 15, 30, 25, 3, 4],
+    ["Pink_Fushisha", inWeapons[0], 25, 45, 25, 3, 4],
+    ["Icy_Tractor", inWeapons[0], 35, 55, 30, 3, 4],
 
 ]
 
-const SPLAT_MENU = new Map()
-    .set('A', ["Choose Weapon", chooseWeapon])
-    .set('B',["Choose Armor", chooseArmor])
-    .set('C',["Choose Upgrade", chooseUpgrade]);
+//const SPLAT_MENU = new Map()
+    //.set('A', ["Choose Weapon", chooseWeapon])
+    //.set('B',["Choose Armor", chooseArmor])
+    //.set('C',["Choose Upgrade", chooseUpgrade]);
 
 class Weapon {
     constructor(name, type, minDamage, maxDamage, ammo, minRange, maxRange) {

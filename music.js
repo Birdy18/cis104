@@ -5,7 +5,7 @@
  */
 
 "use strict";
-const PROMPT = require('readline-sync');
+const BLIB = require('./birdlib');
 
 /**HappyTunes is a progressive web application for downloading music files. Each time a file is purchased, a transaction record is created that includes the music genre and price paid. The available genres are Classical, Easy Listening, Jazz, Pop, Rock, and Other. Develop an application that accepts input data for each transaction and displays a report that lists each of the music genres, along with a count of the number of downloads in each of the following price categories:
  (Classical, Easy Listening, Jazz, Pop, Rock, and Other)
@@ -50,7 +50,7 @@ function happyTunes() {
     console.log("B: See Transaction");
     console.log("C: Exit");
 
-    let input = PROMPT.question("Choice: ").toUpperCase();
+    let input = BLIB.getKeyboard("Choice: ").toUpperCase();
     if(!input) {
         console.log('\nERROR, NOT A VALID CHOICE!');
         return;
@@ -78,21 +78,15 @@ function seeTransaction() {
 
 function purchaseMusic() {
     console.log(`Genres: ${GENRES.join(', ')}`);
-    let choice = PROMPT.question('What genre do you want to purchase from: ').toUpperCase();
-    if(!choice) {
-        console.log('ERROR, NOT A VALID CHOICE!');
-        return;
-    }
+    let choice = BLIB.getKeyboard('What genre do you want to purchase from: ').toUpperCase();
+
     if(!genresMap.has(choice)) {
         console.log('ERROR, NOT A VALID GENRE!');
         return;
     }
     let genre = genresMap.get(choice);
-    let purchase = Number(PROMPT.question('How much are you going to pay: '));
-    if(isNaN(purchase)) {
-        console.log("NOT A VALID AMOUNT!");
-        return;
-    }
+    let purchase = BLIB.getNumber('How much are you going to pay: ');
+
     genre.purchases.push(purchase);
 
 }

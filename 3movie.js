@@ -11,7 +11,7 @@ const MIN_STARS = 0, MAX_STARS = 5;
 const MAX_TRIES = 3;
 let movieTitle;
 let stars = [];
-let average;
+let errors, average;
 let movieReview;
 
 /**
@@ -20,6 +20,7 @@ let movieReview;
  *@returns {null}
  */
 function main() {
+    setErrors();
     setMovieTitle();
     setMovieRate();
     setMovieReview();
@@ -41,35 +42,34 @@ main();
 function setMovieTitle() {
     movieTitle = PROMPT.question('\nWhat is the name of the movie?');
     console.clear();
+}
+
+function setErrors() {
+    errors = Number(0);
     }
 
 
-function setMovieRate() {
-    let errors = 0;
-    while (errors < MAX_TRIES) {
-        let rating = Number(PROMPT.question("How many stars? (0-5): "));
-        console.clear();
-        try {
-            if(isNaN(rating)) {
-                throw "This is not a valid input, please try again!";
-            }
-            if (rating > MAX_STARS) {
-                throw "This is not a valid input, please try again!";
-
-            }
-            if (rating < MIN_STARS) {
-                throw "This is not a valid input, please try again!";
-            }
-            stars.push(rating);
-        }
-        catch(error) {
-            console.log(error);
-            errors++;
-        }
-
+    function setMovieRate() {
+        while (errors < MAX_TRIES) {
+            let rating = Number(PROMPT.question("How many stars? (0-5): "));
+            console.clear();
+        if (isNaN(rating) || rating > MAX_STARS || rating < MIN_STARS) {
+            incrementErrors();
+        } else {
+            pushRating(rating);
         }
 
     }
+}
+
+function pushRating(rating) {
+    stars.push(rating);
+}
+
+function incrementErrors() {
+    console.log("This is not a valid input, please try again!");
+    errors++;
+}
 
 
 function setAverage() {

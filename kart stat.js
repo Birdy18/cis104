@@ -28,8 +28,23 @@ class Kart {
 }
 
 class Tires {
-    constructor(tiresName, speed, acceleration, weight, handling, offRoad) {
+    constructor(tiresName, tiresSpeed, tiresAcceleration, tiresWeight, tiresHandling, tiresOffRoad) {
         this.tiresName = tiresName;
+        this.tiresSpeed = tiresSpeed;
+        this.tiresAcceleration = tiresAcceleration;
+        this.tiresWeight = tiresWeight;
+        this.tiresHandling = tiresHandling;
+        this.tiresOffRoad = tiresOffRoad;
+    }
+}
 
+class Glider {
+    constructior(gliderName, gliderSpeed, gliderAcceleration, gliderWeight, gliderHandling, gliderOffRoad) {
+        this.gliderName = gliderName;
+        this.gliderSpeed = gliderSpeed;
+        this.gliderAcceleration = gliderAcceleration;
+        this.gliderWeight = gliderWeight;
+        this.gliderHandling = gliderHandling;
+        this.gliderOffRoad = gliderOffRoad;
     }
 }
