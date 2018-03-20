@@ -4,7 +4,7 @@
  *  Purpose: Music related
  */
 
-"use strict"
+"use strict";
 const PROMPT = require('readline-sync');
 
 /**HappyTunes is a progressive web application for downloading music files. Each time a file is purchased, a transaction record is created that includes the music genre and price paid. The available genres are Classical, Easy Listening, Jazz, Pop, Rock, and Other. Develop an application that accepts input data for each transaction and displays a report that lists each of the music genres, along with a count of the number of downloads in each of the following price categories:
@@ -17,161 +17,85 @@ const PROMPT = require('readline-sync');
  */
 
 let runProgram = 1;
-let musicName, musicPrice;
-let errorCount = 0;
-let errorMax = 3;
-let login, account;
-let accounts = new Map();
-const accountPopulate = [
-    [1,"Trevor", 1998],
-    [2,"Rocky", 1158],
-    [3,"Jiminy",2014],
-    [4,"Howard",4120]
-];
+const GENRES = ["Classical", "Easy Listening", "Jazz", "Pop", "Rock", "Other"];
+let genresMap = new Map();
 
-const MUSIC_LIST = new Map()
-    .set('A',["Bronze-Rated (< $3.00)", chooseBronze])
-    .set('B',["Silver-Rated ($3.00-$5.99", chooseSilver])
-    .set('C',["Gold-Rated ($6.00-$9.99)", chooseGold])
-    .set('D',["Platnum-Rated ( > $10.00)", choosePlatnum])
-    .set('E',["Exit",endProgram]);
-
-var musicGenre = ["Classical","Easy Listening", "Jazz", "Pop", "Rock", "Other"];
-
-class Music {
-    constructor(name, genre, price) {
-        music.name = name;
-        music.genre = musicGenre;
-        music.price = price;
-    }
-}
-
-class Account {
-    constructor(id, name, PIN) {
-        this.id = id;
+class MusicGenre {
+    constructor(name) {
         this.name = name;
-        this.pin = PIN;
-    }
-
-    addAccount() {
-        let account = PROMPT.question('\nPlease type in your account name: ');
-        let newAccount = new Account(name, PIN);
-        this.account.push(newAccount);
-    }
-
-    toString() {
-        return this.name + this.pin.toString();
-    }
-
-    login(name, PIN) {
-        account = this.account.get(name);
-        if (!this.account.has(name)) {
-            return false;
-        }
-        if (account.pin != account.name) {
-            return false;
-        }
-    }
-
-    PINCheck(numPIN) {
-        if (this.pin === numPIN) {
-            return true;
-        }
-        return false;
+        this.purchases = [];
     }
 }
-class Transaction {
-    constructor(account, reciept, total, date) {
-        transaction.account = account.name;
-        transaction.reciept
-    }
-}
-
 
 function main() {
     loadApp();
     while(runProgram) {
-        activateApp();
+        happyTunes();
     }
-    console.log("Please come back, and rock on!! ")
-    return;
+    console.log("Please come back, and rock on!!")
 }
 
 main();
 
+// Section 4
+
 function loadApp() {
-    for(let account of accountPopulate) {
-        accounts.set(account[0], new Account(account[0],account[1],account[2],account[3]))
+    for(let genre of GENRES) {
+        genresMap.set(genre.toUpperCase(), new MusicGenre(genre));
     }
 }
-function runLogin() {
-    if (errorCount >= maxError) {
-        console.log("TOO MANY ERRORS.");
-        runProgram = 0;
+
+function happyTunes() {
+    console.log("A: Purchase Music");
+    console.log("B: See Transaction");
+    console.log("C: Exit");
+
+    let input = PROMPT.question("Choice: ").toUpperCase();
+    if(!input) {
+        console.log('\nERROR, NOT A VALID CHOICE!');
         return;
     }
 
-    let id = Number(PROMPT.question('\nPlease type in your ID: '));
-    let name = PROMPT.question('Please enter in your name: ');
-    let numPIN = Number(PROMPT.question('\nPlease enter your PIN number: '));
+    switch(input) {
+        case "A":
+            purchaseMusic();
+            break;
+        case "B":
+            seeTransaction();
+            break;
+        case "C":
+            endProgram();
+            break;
+        default:
+            console.log('\nERROR, NOT A VALID INPUT!');
+            break;
+    }
+}
 
-    if (!accounts.has(id)) {
-        console.log('ERROR INVALID CREDENTIALS!');
-        errorCount++;
+function seeTransaction() {
+    console.log(genresMap);
+}
+
+function purchaseMusic() {
+    console.log(`Genres: ${GENRES.join(', ')}`);
+    let choice = PROMPT.question('What genre do you want to purchase from: ').toUpperCase();
+    if(!choice) {
+        console.log('ERROR, NOT A VALID CHOICE!');
         return;
     }
-
-    let foundAccount = accounts.get(id);
-
-    if (!foundAccount.name === name) {
-        console.log('ERROR INVALID CREDENTIALS!');
-        errorCount++;
+    if(!genresMap.has(choice)) {
+        console.log('ERROR, NOT A VALID GENRE!');
         return;
     }
-    if (!foundAccount.PINCheck(numPIN)) {
-        console.log('ERROR INVALID CREDENTIALS!');
-        errorCount++;
+    let genre = genresMap.get(choice);
+    let purchase = Number(PROMPT.question('How much are you going to pay: '));
+    if(isNaN(purchase)) {
+        console.log("NOT A VALID AMOUNT!");
         return;
     }
-    login = foundAccount;
+    genre.purchases.push(purchase);
 
 }
-
-function activateApp() {
-    if(!login) {
-        runLogin();
-        return;
-    }
-    manageMusicList();
-}
-
-function displayMusicList() {
-    let output = "";
-    for (let key of MUSIC_LIST.keys()) {
-        output += key + ": " + MUSIC_LIST.get(key)[0] +'\n';
-    }
-}
-
-function manageMusicList() {
-    displayMusicList();
-    let option = PROMPT.question("Choice: ").toUpperCase();
-    if (!MUSIC_LIST.has(option)) {
-        console.log('\nThis is not a valid menu choice');
-        return;
-    }
-    MUSIC_LIST.get(option)[1]();
-}
-
-function
-
-function displayTransaction() {
-
-}
-
-function populateMusic() {
-    musicName = PROMPT.question('\nWhat is the name of the song? ')
-}
-
 
 function endProgram() {
     runProgram = 0;
