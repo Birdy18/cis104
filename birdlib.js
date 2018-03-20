@@ -23,3 +23,38 @@ function getNumber(question) {
 }
 
 exports.getNumber = getNumber;
+
+
+function matchOptions(search, options) {
+    options = Array.from(options);
+    options.sort((a, b) => {return a.toString().length - b.toString().length});
+    for (let possible of options) {
+        if(search.toString().toLowerCase() === possible.toString().toLowerCase()) {
+            return possible;
+        }
+        if(possible.toString().toLowerCase().startsWith(search.toString().toLowerCase())) {
+            return possible;
+        }
+    }
+}
+
+exports.matchOptions = matchOptions;
+
+function getOption(question, options) {
+    options = Array.from(options);
+    let response = getKeyboard(question);
+    response = matchOptions(response, options);
+    if(!response) {
+            console.log(`ERROR: Not a valid choices! Choices are: ${options.join(", ")}`);
+            return getOption(question, options);
+        }
+    return response;
+}
+
+exports.getOption = getOption;
+
+function pressEnter() {
+    PROMPT.question("Press Enter to continue...");
+}
+
+exports.pressEnter = pressEnter;

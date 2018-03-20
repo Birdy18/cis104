@@ -5,7 +5,7 @@
  */
 
 //Section 1: Pragma and Requirements
-"Use strict";
+"use strict";
 const PROMPT = require("readline-sync");
 
 // Section 2: Global variables and classes

@@ -25,6 +25,9 @@ class MusicGenre {
         this.name = name;
         this.purchases = [];
     }
+    toString() {
+        return this.name;
+    }
 }
 
 function main() {
@@ -78,13 +81,8 @@ function seeTransaction() {
 
 function purchaseMusic() {
     console.log(`Genres: ${GENRES.join(', ')}`);
-    let choice = BLIB.getKeyboard('What genre do you want to purchase from: ').toUpperCase();
+    let genre = BLIB.getOption('Choose Genre: ', genresMap.values());
 
-    if(!genresMap.has(choice)) {
-        console.log('ERROR, NOT A VALID GENRE!');
-        return;
-    }
-    let genre = genresMap.get(choice);
     let purchase = BLIB.getNumber('How much are you going to pay: ');
 
     genre.purchases.push(purchase);
