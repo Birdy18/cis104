@@ -48,6 +48,7 @@ class MusicGenre {
 }
 
 function main() {
+    console.clear();
     loadApp();
     while(runProgram) {
         happyTunes();
@@ -99,7 +100,7 @@ function seeTransaction() {
 }
 
 function compareGenres(a, b) {
-    //return b.purchases.length - a.purchases.length;
+    //return b.purchases.length - a.purchaseslength;
     return b.sumPurchases() - a.sumPurchases();
 }
 
@@ -113,8 +114,25 @@ function purchaseMusic() {
     let purchase = BLIB.getNumber('How much are you going to pay: ');
     genre.purchases.push(purchase);
     sortGenres();
+    switch (purchase) {
+        case purchase > 3.00:
+            console.log('\nYou wish to purchae our cheapest product?');
+            break;
+        case 3.00 > purchase || purchase < 5.99:
+            console.log('\nOoooh, good choice! ');
+            break;
+        case 6.00 > purchase || purchase < 9.99:
+            console.log('\nA little expensive isnt it?');
+            break;
+        case purchase > 10.00:
+            console.log('\nHope you can afford it');
+            break;
+    }
+    return happyTunes();
 }
 
 function endProgram() {
     runProgram = 0;
 }
+
+
