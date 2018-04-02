@@ -42,11 +42,31 @@ class Upgrade {
     }
 }
 class Avatar {
-    constructor(name, color, weapon, armor, upgrade) {
+    constructor(name, level, color, weapon, armor, upgrade) {
         this.name = name;
+        this.level = levelup.level;
         this.color = color;
         this.weapon = Weapon;
         this.armor = Armor;
         this.upgrade = Upgrade;
     }
 }
+class Experience {
+    constructor(smallKO, mediumKO, largeKO, nextEXP) {
+        experience.small = smallKO;
+        experience.medium = mediumKO;
+        experience.large = largeKO;
+        experience.next = nextEXP;
+    }
+}
+
+function main() {
+
+}
+
+main();
+
+function LevelUp() {
+
+}
+

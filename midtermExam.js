@@ -96,8 +96,9 @@ function main() {
 main();
 
 function loadATM() {
+    let i = [];
     for(let account of accountPopulate) {
-        accounts.set(account[0], new Account(account[0],account[1], account[2], account[3]));
+        accounts.set(account[i], new Account(account[0],account[1], account[2], account[3]));
     }
 }
 
