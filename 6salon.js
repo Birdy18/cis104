@@ -5,6 +5,7 @@ const IO = require('fs');
 let continueResponse;
 let numClient, menuChoice;
 let client = [];
+let runProgram = 1;
 
 function main() {
     if (continueResponse !== 0 && continueResponse !== 1) {
@@ -50,4 +51,8 @@ function loadClient() {
     for (let line of lines) {
         client.push(line.toString().split(/,/));
     }
+}
+
+function setExit() {
+    runProgram = 0;
 }
