@@ -80,55 +80,55 @@ function populateStudents() {//This line starts a new function called populateSt
                 console.log(`${students[i][0]} is invalid. Please try again.`);//The terminal will use console.log to throw an error message
             }//Closes the if statement
         }//Closes the while loop
-        while (! students[i][1] || !/^[a-zA-Z -]{1,30}$/.test(students[i][1])) {//
-            students[i][1] = PROMPT.question(`Please enter first name: `);
-            if (! /^[a-zA-Z -]{1,30}$/.test(students[i][1])) {
-                console.log(`${students[i][1]} is invalid. Please try again.`);
-            }
-        }
-        while (! students[i][2] || !/^\d{2}\/\d{2}\/\d{4}$/.test(students[i][2])) {
-            students[i][2] = PROMPT.question(`Please enter date of birth (xx/xx/xxxx): `);
-            if (! /^\d{2}\/\d{2}\/\d{4}$/.test(students[i][2])) {
-                console.log(`${students[i][2]} is invalid. Please try again.`);
-            }
-        }
-        while (! students[i][3] || students[i][3] < MIN_GRADE || students[i][3] > MAX_GRADE) {
-            students[i][3] = PROMPT.question(`Please enter grade level (0-8): `);
-            if (students[i][3] < MIN_GRADE || students[i][3] > MAX_GRADE) {
-                console.log(`${students[i][3]} is invalid. Please try again.`);
-            }
-        }
-        while (! students[i][4] || !/^[mMfF]$/.test(students[i][4])) {
-            students[i][4] = PROMPT.question(`Please enter gender (m or f): `).toLowerCase();
-            if (! /^[mMfF]$/.test(students[i][4])) {
-                console.log(`${students[i][4]} is invalid. Please try again.`);
-            }
-        }
-    }
-}
+        while (! students[i][1] || !/^[a-zA-Z -]{1,30}$/.test(students[i][1])) {//This line shows the qualifications of input in the first name, allowing capital and lowercase letters and how many letters can be inputed
+            students[i][1] = PROMPT.question(`Please enter first name: `);//This array is set to the first name
+            if (! /^[a-zA-Z -]{1,30}$/.test(students[i][1])) {//This line states that if the user input does not meet the requirements in this while loop...
+                console.log(`${students[i][1]} is invalid. Please try again.`);//The terminal will use the console.log to throw an error message
+            }//Closes the if statement
+        }//Closes the while loop
+        while (! students[i][2] || !/^\d{2}\/\d{2}\/\d{4}$/.test(students[i][2])) {//This line shows that the user input is to be set up in the xx/xx/xxx for the array
+            students[i][2] = PROMPT.question(`Please enter date of birth (xx/xx/xxxx): `);//This line is being asked a question to set for the student array
+            if (! /^\d{2}\/\d{2}\/\d{4}$/.test(students[i][2])) {//This line states that if the user input doesn't match what's required to answer the array's question
+                console.log(`${students[i][2]} is invalid. Please try again.`);//This line shows that the terminal will use console.log to throw an error message and refrenecing the user's input of the faulty array in that message
+            }//This closes the if statement
+        }//This closes the while loop
+        while (! students[i][3] || students[i][3] < MIN_GRADE || students[i][3] > MAX_GRADE) {//This lines shows a while statement of what will happend if the user input of the array is met with any of the or logic
+            students[i][3] = PROMPT.question(`Please enter grade level (0-8): `);//This line shows the 4th array being set to grade level
+            if (students[i][3] < MIN_GRADE || students[i][3] > MAX_GRADE) {//This line shows that if the user input is incorrect or doesn't meet with any of the or statements..
+                console.log(`${students[i][3]} is invalid. Please try again.`);//This line shows that the terminal with throw an error meessage, refrencing the faulty input of the student array
+            }//Closes this if statement
+        }//Closes the while loop
+        while (! students[i][4] || !/^[mMfF]$/.test(students[i][4])) {//This line shows this array being set for gender, and the question will except both capital and lowercase M's and F's
+            students[i][4] = PROMPT.question(`Please enter gender (m or f): `).toLowerCase();//This line shows the array being set to a PROMPT.question and it will be set to whatever the user inputs
+            if (! /^[mMfF]$/.test(students[i][4])) {//This line shows that if the user inputs is not either an m, M, f, or F...
+                console.log(`${students[i][4]} is invalid. Please try again.`);//This line shows that the terminal will throw an error message
+            }//Closes the if statement
+        }//Closes the while loop
+    }//Closes the for statement
+}//Closes the populateStudent function
 
 /**
  * @method
  * @desc rewardedStudents SD array mutator
  * @returns {null}
  */
-function determineRewardStudent() {
-    let rewarded = false;
-    while (! rewarded) {
-        rewarded = true;
-        let randomStudent = Math.floor((Math.random() * students.length));
-        if (rewardStudents.length > 0 && rewardStudents.length < students.length) {
-            for (let student of rewardStudents) {
-                if (student === randomStudent) {
-                    rewarded = false;
-                    break;
-                }
-            }
-            if (rewarded) {
-                rewardStudents.push(randomStudent);
-                break;
-            }
-        } else {//
+function determineRewardStudent() {//This line starts a new function called determineRewardStudent
+    let rewarded = false;//This line is a variable being set to false;
+    while (! rewarded) {//This while statement states that if the variable rewarded is not true...
+        rewarded = true;//The same variable will be switched to true
+        let randomStudent = Math.floor((Math.random() * students.length));//This line shows a variable being set to an equation using the users input
+        if (rewardStudents.length > 0 && rewardStudents.length < students.length) {//This if statement states that if the variable is greater than and less than the student array's length...
+            for (let student of rewardStudents) {//
+                if (student === randomStudent) {//If the two variables are equal...
+                    rewarded = false;//This variable will be set to false
+                    break;//This breaks out of the if statement to avoid any unnecessary looping
+                }//This closes the if statement
+            }//This closes the for loop
+            if (rewarded) {//However, if the variable is indeed true...
+                rewardStudents.push(randomStudent);//The variable randomStudent will be pushed into the rewardStudents array
+                break;//This breaks out of the if loop to avoid any unnecessary looping
+            }//This closes the if statement
+        } else {//This starts an else statement
             rewardStudents = [];//This variable is set as an array
             rewardStudents.push(randomStudent);//This variable is pushing another variable
         }//This ends the else statement
@@ -143,7 +143,7 @@ function determineRewardStudent() {
  */
 function displayRewardStudent() {//This line prepares for a new function called displayRewardStudent
     console.log(`You get to reward ${students[rewardStudents[rewardStudents.length - 1]][0]} today!`);//This line is console.log showing the user how many students are being rewareded based on their arrays
-}
+}//This closes the function displayRewardStudent
 
 /*
  The "Hurr Durr, Make 'em Smarter Everyday" private school has again contracted you to write software that stores the following
