@@ -3,10 +3,10 @@ const BLIB = require('./birdlib');
 const IO = require('fs');
 
 let continueResponse;
-let numClient, menuChoice;
+let numClients, menuChoice;
 let client = [];
 let runProgram = 1;
-
+let limitCoupon = 750;
 function main() {
     if (continueResponse !== 0 && continueResponse !== 1) {
         setContinueResponse();
@@ -34,6 +34,16 @@ function setMenuChoice() {
     }
 }
 
+function modifyClient(ADD_DELETE) {
+    process.stdout.write('\x1B[2J\x1B[0f');
+    if (ADD_DELETE === ADD_CLIENT) {
+        while (numClients > 0) {
+            let numClient = client.length;
+            client[newClient] = [];
+        }
+    }
+}
+
 function setContinueResponse() {
     if (continueResponse) {
         continueResponse = -1;
@@ -51,6 +61,10 @@ function loadClient() {
     for (let line of lines) {
         client.push(line.toString().split(/,/));
     }
+}
+
+function setCoupon() {
+
 }
 
 function setExit() {
