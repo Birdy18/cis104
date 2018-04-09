@@ -8,29 +8,21 @@ let client = [];
 let runProgram = 1;
 let limitCoupon = 750;
 function main() {
-    if (continueResponse !== 0 && continueResponse !== 1) {
-        setContinueResponse();
-    }
-    while (continueResponse === 1) {
-        const ADD_CLIENT = 0; DELETE_CLIENT = 1;
-    }
-    loadClient();
+    setContinueResponse();
     console.log(client);
     setMenuChoice();
     switch (menuChoice) {
-        case 1: modifyClient(ADD_CLIENT);
+        case 1: addClient();
             break;
-        case 2: modifyClient(DELETE_CLIENT);
+        case 2: deleteClient();
             break;
         case 3:
             break;
         case 4: listClients();
             break;
-        case 5:
+        case 5: loadClient();
             break;
-        case 6:
-            break;
-        case 7: setExit();
+        case 6: setExit();
             break;
     }
 }
@@ -54,47 +46,51 @@ function setMenuChoice() {
     }
 }
 
-function modifyClient(ADD_DELETE) {
+function addClient(newClient) {
     console.clear();
     let count = 1;
-    if (ADD_DELETE === ADD_CLIENT) {
-        while (numClients > 0) {
-            let numClient = client.length;
-            client[newClient] = [];
-            console.log('Client ${count}:');
-            while(!client[newClient][0] || !/^[0-9 -]{4}$/.test(client[newClient][0])) {
-                client[newClient][0] = BLIB.getNumber('\nPlease enter your ID number ');
-                if (! /^[0-9 -]{4}$/.test(client[newClient][0])) {
-                    console.log(`${client[newClient[0]]} IS INVALID, PLEASE TRY AGAIN! `)
-                }
-            }
-            while(!client[newClient][1] || !/^[a-zA-Z -]{1,30}$/.test(client[newClient][1])) {
-                client[newClient][1] = BLIB.getKeyboard('\nPlease enter your first name ');
-                if (! /^[a-zA-Z -]{1,30}$/.test(client[newClient][1])) {
-                    console.log(`${client[newClient[1]]} IS INVALID, PLEASE TRY AGAIN! `)
-                }
-            }
-            while(!client[newClient[2]] || !/^[a-zA-Z -]{1,40}$/.test(client[newClient[2]])) {
-                client[newClient][2] = BLIB.getKeyboard('\nPlease enter your last name ');
-                if (! /^[a-zA-Z -]{1,40}$/.test(client[newClient[2]])) {
-                    console.log(`${client[newClient][2]} IS INVALID, PLEASE TRY AGAIN! `)
-                }
-            }
-            let client[newClient][3] = BLIB.getNumber()
-            console.log(``);
-            count++;
-            numClient++;
-        }
-    } else {
-        let deleteClient;
-        deleteClient = BLIB.getKeyboard('\nWould you like to delete student? [0=no][1=yes] ');
-        if (deleteClient === 1) {
-            client.splice(deleteClient, 1)
-        }
-        else {
-            return;
+    client[newClient] = [];
+    let numClient = client.length;
+    client[newClient] = [];
+    console.log('Client ${count}:');
+    while (!client[newClient][0] || !/^[0-9 -]{4}$/.test(client[newClient][0])) {
+        client[newClient][0] = BLIB.getNumber('\nPlease enter your ID number ');
+        if (!/^[0-9 -]{4}$/.test(client[newClient][0])) {
+            console.log(`${client[newClient][0]} IS INVALID, PLEASE TRY AGAIN! `)
         }
     }
+    while (!client[newClient][1] || !/^[a-zA-Z -]{1,30}$/.test(client[newClient][1])) {
+        client[newClient][1] = BLIB.getKeyboard('\nPlease enter your first name ');
+        if (!/^[a-zA-Z -]{1,30}$/.test(client[newClient][1])) {
+            console.log(`${client[newClient][1]} IS INVALID, PLEASE TRY AGAIN! `)
+        }
+    }
+    while (!client[newClient][2] || !/^[a-zA-Z -]{1,40}$/.test(client[newClient][2])) {
+        client[newClient][2] = BLIB.getKeyboard('\nPlease enter your last name ');
+        if (!/^[a-zA-Z -]{1,40}$/.test(client[newClient][2])) {
+            console.log(`${client[newClient][2]} IS INVALID, PLEASE TRY AGAIN! `)
+        }
+    }
+    client[newClient][3] = BLIB.getNumber('\nHow much have you contributed? ');
+    if (client[newClient][3] >= limitCoupon) {
+        console.log('\nCONGRADULATIONS! YOU EARNED A COUPON! ')
+    }
+    console.log(``);
+    count++;
+    numClient++;
+    client.push(client);
+}
+
+function deleteClient() {
+    let deleteClient;
+    listClients();
+    while (!deleteClient || deleteClient < 0 || deleteClient > client.length - 1) {
+        deleteClient = BLIB.getKeyboard('\nPlease enter the client ID number you want to delete: ');
+        if ((!deleteClient || deleteClient < 0 || deleteClient > client.length - 1)) {
+            console.log(`${deleteClient} IS INVALID, PLEASE TRY AGAIN`)
+        }
+}
+    client.splice(deleteClient, 1);
 }
 
 function setContinueResponse() {
@@ -106,6 +102,10 @@ function setContinueResponse() {
     } else {
         continueResponse = 1;
     }
+}
+
+function showTransaction() {
+
 }
 
 function loadClient() {
@@ -121,19 +121,7 @@ function setCoupon() {
 }
 
 function listClients() {
-    process.stdout.write('\x1B[2J\x1B[0f');
-    const COLUMNS = 5;
-    console.log(`ID   FIRST    LAST   `);
-    for (let i = 0; i < client.length; i++) {
-        process.stdout.write(`${i}   `);
-        for (let j = 0; j < COLUMNS; j++) {
-            if (j < COLUMNS - 1) {
-                process.stdout.write(`${client[i][j]}, `);
-            } else {
-                process.stdout.write(`${client[i][j]}\n `);
-            }
-        }
-    }
+    console.clear();
 }
 
 function setExit() {
