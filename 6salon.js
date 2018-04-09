@@ -128,9 +128,9 @@ function listClients() {
         process.stdout.write(`${i}   `);
         for (let j = 0; j < COLUMNS; j++) {
             if (j < COLUMNS - 1) {
-                process.stdout.write(`${students[i][j]}, `);
+                process.stdout.write(`${client[i][j]}, `);
             } else {
-                process.stdout.write(`${students[i][j]}\n `);
+                process.stdout.write(`${client[i][j]}\n `);
             }
         }
     }
