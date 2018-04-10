@@ -88,7 +88,6 @@ function deleteClient() {
         }
 }
     client.splice(deleteClient, 1);
-    return setMenuChoice();
 }
 
 function setContinueResponse() {
