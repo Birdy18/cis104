@@ -51,7 +51,6 @@ function addClient(newClient) {
     let count = 1;
     client[newClient] = [];
     let numClient = client.length;
-    client[newClient] = [];
     console.log('Client ${count}:');
     while (!client[newClient][0] || !/^[0-9 -]{4}$/.test(client[newClient][0])) {
         client[newClient][0] = BLIB.getNumber('\nPlease enter your ID number ');
@@ -75,10 +74,8 @@ function addClient(newClient) {
     if (client[newClient][3] >= limitCoupon) {
         console.log('\nCONGRADULATIONS! YOU EARNED A COUPON! ')
     }
-    console.log(``);
-    count++;
-    numClient++;
-    client.push(client);
+    client.push(newClient);
+    return setMenuChoice();
 }
 
 function deleteClient() {
@@ -91,6 +88,7 @@ function deleteClient() {
         }
 }
     client.splice(deleteClient, 1);
+    return setMenuChoice();
 }
 
 function setContinueResponse() {
@@ -111,17 +109,27 @@ function showTransaction() {
 function loadClient() {
     let clientFile = IO.readFileSync('data/client_data.csv' , 'utf8');
     let lines = clientFile.toString().split(/\r?\n/);
-    for (let line of lines) {
-        client.push(line.toString().split(/,/));
+    for (let i = 0; i < lines.length; i++) {
+        client.push(lines[i].toString().split(/,/));
     }
 }
 
 function setCoupon() {
-
 }
 
 function listClients() {
     console.clear();
+    const COLUMNS = 4;
+    console.log('ID  FIRST  LAST  $');
+    for (let i = 0; i < client.length; i++) {
+        for (let j = 0; j < COLUMNS; j++) {
+            if (j < COLUMNS - 1) {
+                console.log(`${client[i][j]},  `);
+            } else {
+                console.log(`${client[i][j]}\n`)
+            }
+        }
+    }
 }
 
 function setExit() {
