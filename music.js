@@ -40,7 +40,7 @@ class MusicGenre {
         return output;
     }
 
-    display() {
+    static display() {
         return `${this.name}: $${this.sumPurchases()}`;
 
     }

@@ -2,62 +2,111 @@
 const BLIB = require('./birdlib');
 
 let runProgram = 1;
-let client = [];
-let wallet = 50;
-const clientsPopulate = [
-    [1998, "Trevor Birdsall"]
+let amount = 100;
+const clients = [
+    [1222, "Trevor Birdsall", amount]
 ];
 
-const CLIENT_MENU = new Map()
-    .set('1',["Add Client", addClients])
-    .set('2',["Delete Client", deleteClient])
-    .set('3',["Show Transaction", showTransaction])
-    .set('4',["List Clients",listClients])
-    .set('5',["Exit",setExit]);
 
 class Client {
-    constructor(ID, NAME, FUNDS) {
-        this.id = ID;
-        this.name = NAME;
-        this.funds = FUNDS;
+    constructor(id, name, funds) {
+        this.id = id;
+        this.name = name;
+        this.funds = funds;
+        this.purchases = [];
+    }
+
+    sumPurchases() {
+        let output = 0;
+        if(!this.purchases.length) {
+            return output;
+        }
+        for (let purchase of this.purchases) {
+            output += purchase;
+        }
+        return output;
     }
     numClients() {
         return this.client.length
     }
-    static deleteClient() {
-        let deleteClient;
-        listClients();
-        while (!deleteClient || deleteClient < 0 || deleteClient > client.length - 1) {
-            deleteClient = BLIB.getKeyboard('\nPlease enter the client ID number you want to delete: ');
-            if ((!deleteClient || deleteClient < 0 || deleteClient > client.length - 1 || !deleteClient === this.id)) {
-                console.log(`${deleteClient} IS INVALID, PLEASE TRY AGAIN`)
-            }
-            client.splice(deleteClient, 1);
-        }
-    }
     toString() {
         return this.client;
+    }
+    static display() {
+        return `${client.id}, ${client.name}, ${client.funds}`
     }
 }
 
 function main() {
-    console.clear();
-    menuManager();
+    beautySalon();
 }
 
 main();
 
-function addClients() {
-    let id = BLIB.getNumber('\nPlease enter your ID number: ');
-    let first = BLIB.getKeyboard('\nPlease enter your first name:  ');
-    let last = BLIB.getKeyboard('\nPlease enter your last name:  ');
-    let funds = BLIB.getNumber('\nHow much have you contributed? ');
-    let new_Client = new Client(first, last, funds);
-    client.push(new_Client);
+function beautySalon() {
+    console.log("A: Add Client");
+    console.log("B: Delete Client");
+    console.log("C: Show Transaction");
+    console.log("D: List Clients");
+    console.log("E: Load");
+    console.log("F: Save");
+    console.log("G: Exit");
+
+    let input = BLIB.getKeyboard("Choice: ").toUpperCase();
+    if(!input) {
+        console.log('\nERROR, NOT A VALID CHOICE!');
+        return;
+    }
+
+    switch(input) {
+        case "A":
+            addClients();
+            break;
+        case "B":
+            deleteClient();
+            break;
+        case "C":
+            showTransaction();
+            break;
+        case "D":
+            listClients();
+            break;
+        case "E":
+            loadClient();
+            break;
+        case "F":
+            saveClient();
+            break;
+        case "G":
+            setExit();
+            break;
+        default:
+            console.log("NOT A VALID INPUT, PLEASE TRY AGAIN");
+            break;
+    }
 }
 
-function deleteClient() {
-    client.deleteClient();
+function addClients() {
+    let id = BLIB.getNumber('\nPlease enter your ID number: ');
+    let name = BLIB.getKeyboard('\nPlease enter your name:  ');
+    let funds = BLIB.getNumber('\nHow much have you contributed? ');
+    let new_Client = new Client(id, name, funds);
+    return beautySalon();
+
+}
+
+function deleteClient(id) {
+    let deleteClient;
+    listClients();
+    while (!deleteClient || deleteClient < 0 || deleteClient > client.length - 1) {
+        deleteClient = BLIB.getKeyboard('\nPlease enter the client ID number you want to delete: ');
+        if ((!deleteClient || deleteClient < 0 || deleteClient > client.length - 1 || !deleteClient === clients.id)) {
+            console.log(`${deleteClient} IS INVALID, PLEASE TRY AGAIN`);
+        }
+        else {
+            client.splice(deleteClient, 1);
+        }
+    }
 }
 
 function showTransaction() {
@@ -73,15 +122,14 @@ function sortClients() {
 }
 
 function listClients() {
-    for (let client of clientsPopulate) {
-        console.log(client.display);
+    let client = BLIB.getKeyboard("Choose Client by ID:  ",clients );
+    if (! client === clients.id) {
+        console.log(clients);
     }
-}
-
-function menuManager() {
-    BLIB.displayMenu(CLIENT_MENU);
-    let action = CLIENT_MENU.get(BLIB.getOption("Choice: ", CLIENT_MENU.keys()));
-    action[1]();
+    else {
+        console.log('\nERROR, NOT AN ID IN DATABASE, PLEASE TRY AGAIN! ')
+        return beautySalon();
+    }
 }
 
 function loadClient() {
@@ -90,6 +138,7 @@ function loadClient() {
     for (let i = 0; i < lines.length; i++) {
         client.push(lines[i].toString().split(/,/));
     }
+    return menuManager();
 }
 
 function setExit() {
