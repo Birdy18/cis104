@@ -12,8 +12,7 @@ class Client {
     constructor(id, name, funds) {
         this.id = id;
         this.name = name;
-        this.funds = funds;
-        this.purchases = [];
+        this.funds = amount;
     }
 
     sumPurchases() {
@@ -33,7 +32,7 @@ class Client {
         return this.client;
     }
     static display() {
-        return `${client.id}, ${client.name}, ${client.funds}`
+        return `${this.id}, ${this.name}, ${this.funds}`
     }
 }
 
@@ -91,6 +90,8 @@ function addClients() {
     let name = BLIB.getKeyboard('\nPlease enter your name:  ');
     let funds = BLIB.getNumber('\nHow much have you contributed? ');
     let new_Client = new Client(id, name, funds);
+    clients.push(new_Client);
+    console.log(listClients());
     return beautySalon();
 
 }
@@ -122,14 +123,14 @@ function sortClients() {
 }
 
 function listClients() {
-    let client = BLIB.getKeyboard("Choose Client by ID:  ",clients );
-    if (! client === clients.id) {
-        console.log(clients);
+    console.clear();
+    let i = 1;
+    for (let client of clients) {
+        console.log(`${i}.`);
+        console.log(client.toString());
+        i++;
     }
-    else {
-        console.log('\nERROR, NOT AN ID IN DATABASE, PLEASE TRY AGAIN! ')
-        return beautySalon();
-    }
+    return beautySalon();
 }
 
 function loadClient() {
@@ -138,7 +139,7 @@ function loadClient() {
     for (let i = 0; i < lines.length; i++) {
         client.push(lines[i].toString().split(/,/));
     }
-    return menuManager();
+    return beautySalon();
 }
 
 function setExit() {
