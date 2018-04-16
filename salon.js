@@ -1,5 +1,8 @@
+/*
+
+ */
+
 "use strict";
-const BLIB = require('./birdlib');
 const IO = require('fs');
 
 let masterFile = [], newTransactions = [], coupons = [], noclientFile = [];
@@ -7,6 +10,7 @@ let masterFile = [], newTransactions = [], coupons = [], noclientFile = [];
 function main() {
     loadClient();
     loadTransaction();
+    addClientPricePaid();
     makeCoupons();
     errorReport();
     writeMasterFile();
@@ -38,7 +42,8 @@ function addClientPricePaid() {//Find client within master file
     for(let i = 0; i < newTransactions.length; i++) {
         for(let j = 0; j < masterFile.length; j++) {
             if(newTransactions[i][0] === masterFile[j][0]) {
-                masterFile[j][3] += newTransactions[i][2];
+                masterFile[j][3] = Number(masterFile[j][3]) + Number(newTransactions[i][2]);
+                break;
             }
             if(j === masterFile.length - LENGTH_TO_ARRAY_VALUE) {
                 errClients(newTransactions[i][0]);
