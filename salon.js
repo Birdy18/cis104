@@ -7,6 +7,10 @@ let masterFile = [], newTransactions = [], coupons = [], noclientFile = [];
 function main() {
     loadClient();
     loadTransaction();
+    makeCoupons();
+    errorReport();
+    writeMasterFile();
+    printCoupon();
 }
 
 main();
@@ -43,11 +47,11 @@ function addClientPricePaid() {//Find client within master file
     }
 }
 
-function makeCoupon() {
+function makeCoupons() {
     const CouponAmount = 750;
     for (let i = 0; i < masterFile.length; i++ ) {
         if (masterFile[i][3] >= CouponAmount ) {
-            coupons.push(`Customer ${masterFile[i][1]} ${masterFile[i][2]} has recieved a coupon.`)
+            coupons.push(`Customer ${masterFile[i][1]} ${masterFile[i][2]} has received a coupon.`)
         }
     }
 }
@@ -68,7 +72,33 @@ function loadTransaction() {
 }
 
 function printCoupon() {
+    console.clear();
     for (let i = 0; i < coupons.length; i++) {
         console.log(coupons[i]);
     }
 }
+
+function writeMasterFile() {
+    for (let i = 0; i < masterFile.length; i++) {
+        if (masterFile[i]) {
+            for (let j = 0; j < masterFile[i].length; j++) {
+                if (j < masterFile[i].length - 1) {
+                    IO.appendFileSync(`data/dataX.csv`, `${masterFile[i][j]},`);
+                } else if (i < masterFile.length - 1) {
+                    IO.appendFileSync('data/dataX.csv', `${masterFile[i][j]}\n`);
+                } else {
+                    IO.appendFileSync('data/dataX.csv', `${masterFile[i][j]}`);
+                }
+            }
+        }
+    }
+    IO.unlinkSync(`data/client_data.csv`);
+    IO.renameSync(`data/dataX.csv`, `data/client_data.csv`);
+}
+
+function errorReport() {
+    for (let i = 0; i < noclientFile.length; i++) {
+        IO.appendFileSync(`data/noclientdata.csv`, `${noclientFile[i]} does not exist!\n`);
+    }
+}
+
