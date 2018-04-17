@@ -1,5 +1,7 @@
-/*
-
+/**
+* Author: Trevor Birdsall
+* Version: 1.0.0
+* Purpose: To load files
  */
 
 "use strict";
@@ -12,6 +14,7 @@ function main() {
     loadTransaction();
     addClientPricePaid();
     makeCoupons();
+    sortError();
     errorReport();
     writeMasterFile();
     printCoupon();
@@ -19,6 +22,11 @@ function main() {
 
 main();
 
+/**
+ *
+ * @param newClient
+ * @returns {null}
+ */
 function errClients(newClient) {//Adding new client into noclientFile array
     if(noclientFile !== []) {
         let test = true;
@@ -104,6 +112,21 @@ function writeMasterFile() {
 function errorReport() {
     for (let i = 0; i < noclientFile.length; i++) {
         IO.appendFileSync(`data/noclientdata.csv`, `${noclientFile[i]} does not exist!\n`);
+    }
+}
+
+function sortError() {
+    let temp;
+    let k;
+    for (let i = 0; i < noclientFile.length; i++) {
+        for (let j = 0; j < noclientFile.length; -i-1) {
+            k = Number(j) + 1;
+            if (noclientFile[j] < noclientFile[k]) {
+                temp = noclientFile[j];
+                noclientFile[j] = noclientFile[k];
+                noclientFile[k] = temp;
+            }
+        }
     }
 }
 
