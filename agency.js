@@ -13,6 +13,7 @@ let masterFile = [], newTransactions = [], jobs = [], paid = [];
 function main() {
     loadAgent();
     loadTransactionFile();
+    writeMasterFile();
 }
 
 main();
@@ -32,3 +33,22 @@ function loadTransactionFile() {
         newTransactions.push(lines[i].toString().split(/,/));
     }
 }
+
+function writeMasterFile() {
+    for (let i = 0; i < masterFile.length; i++) {
+        if (masterFile[i]) {
+            for (let j = 0; j < masterFile[i].length; j++) {
+                if (j < masterFile[i].length - 1) {
+                    IO.appendFileSync(`Agency_data/dataX.csv`, `${masterFile[i][j]},`);
+                } else if (i < masterFile.length - 1) {
+                    IO.appendFileSync('Agency_data/dataX.csv', `${masterFile[i][j]}\n`);
+                } else {
+                    IO.appendFileSync('Agency_data/dataX.csv', `${masterFile[i][j]}`);
+                }
+            }
+        }
+    }
+    IO.unlinkSync(`Agency_data/agency_data.csv`);
+    IO.renameSync(`Agency_data/dataX.csv`, `Agency_data/agency_data.csv`);
+}
+
