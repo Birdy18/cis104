@@ -18,6 +18,11 @@ function main() {
 
 main();
 
+/**
+ * @method
+ * @desc Loading the agency data file and setting it to the masterfile
+ * @returns {null}
+ */
 function loadAgent() {
     let agentFile = IO.readFileSync('Agency_data/agency_data.csv', 'utf8');
     let lines = agentFile.toString().split(/\r?\n/);
@@ -26,6 +31,11 @@ function loadAgent() {
     }
 }
 
+/**
+ * @method
+ * @desc Loading the agency transaction file and setting it to the newTrancaction array
+ * @returns {null}
+ */
 function loadTransactionFile() {
     let transFile = IO.readFileSync('Agency_data/agency_transaction.csv', 'utf8');
     let lines = transFile.toString().split(/\r?\n/);
@@ -50,5 +60,13 @@ function writeMasterFile() {
     }
     IO.unlinkSync(`Agency_data/agency_data.csv`);
     IO.renameSync(`Agency_data/dataX.csv`, `Agency_data/agency_data.csv`);
+}
+
+function calculateFunds() {
+    for (let i = 0; i < masterFile.length; i++) {
+        for (let j = 0; j < newTransactions.length; j++) {
+            masterFile[i][4] = Number(masterFile[i][4] * Number(newTransactions[j][4]));
+        }
+    }
 }
 
