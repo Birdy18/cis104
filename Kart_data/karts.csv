@@ -1,0 +1,13 @@
+NAME, WEIGHT, COLOR, SPEED, ACCEL, HAND, COINS
+Mario, Medium, Red, 3, 3, 3, 10
+Luigi, Medium, Green, 3, 3, 3, 10
+Peach, Light, Pink, 2, 4, 3, 12
+Bowser, Heavy, Orange, 5, 2, 1, 12
+Yoshi, Medium, Light Green, 3, 4, 2, 10
+Donkey Kong, Heavy, Yellow, 4, 2, 2, 12
+Wario, Heavy, Purple, 5, 2, 1, 14
+Shy Guy, Small, White, 1, 5, 5, 12
+King Boo, Cruiser, Black, 4, 2, 2, 12
+Metal Mario, Heavy, Grey, 5, 1, 1, 10
+Lakitu, Small, Light Blue, 1, 5, 5, 12
+Chain Chomp, Heavy, Dark Grey, 5, 1, 1, 15

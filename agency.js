@@ -65,8 +65,20 @@ function writeMasterFile() {
 function calculateFunds() {
     for (let i = 0; i < masterFile.length; i++) {
         for (let j = 0; j < newTransactions.length; j++) {
-            masterFile[i][4] = Number(masterFile[i][4] * Number(newTransactions[j][4]));
+            if (masterFile[i][0] === newTransactions[j][3]){
+                paid.push(masterFile[i][0],[Number(masterFile[i][4]) * Number(newTransactions[j][4])]);
+                break;
+            }
         }
     }
 }
 
+function jobCheck() {
+    for (let i = 0; i < masterFile.length; i++) {
+        for (let j = 0; j < newTransactions.length; j++) {
+            if (masterFile[i][0] === newTransactions[j][0]) {
+
+            }
+        }
+    }
+}
