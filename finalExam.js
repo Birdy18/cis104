@@ -62,36 +62,38 @@ function fightPapuPapu() {
         console.log('\nPapu Papu whacks his staff on tile ' + bossAttack + "!");
         let yourPosition = BLIB.getNumber('\nWhere are you before he attacks? ');
         if (yourPosition < min || yourPosition > max) {
+            console.clear();
             console.log('\nNo! Papu Papu hits you! ');
             yourHP -= bossHit;
             console.log('Your HP: ' + yourHP + '');
         }
-
         if (yourPosition === bossAttack) {
+            console.clear();
             yourHP -= bossHit;
             console.log('\nYour HP: ' + yourHP + '');
         }
         else {
+            console.clear();
             console.log('\nYou dodged his attack! ');
         }
             let choice = BLIB.getNumber('\nWhat is your next move? [0=dodge, 1=attack] ');
         if (choice < 0 || choice > 1) {
+            console.clear();
             console.log('\nNot a valid choice! ');
         }
         if (choice === 1) {
+            console.clear();
             bossHealth -= yourHit;
             console.log('\nPapu Papu: ' + bossHealth + '');
-
         }
         if (choice === 0) {
+            console.clear();
             console.log('\nYou chose to dodge! ');
         }
-
         if (yourHP === defeat) {
             console.log('\nGame Over');
             return bossMenu();
         }
-
         if (bossHealth === defeat) {
             console.log('\nYou defeated Papu Papu! You bounce on the unconcious Papu Papu s belly and escape his hut! ');
             return bossMenu();
@@ -108,19 +110,32 @@ function fightRipperRoo() {
     console.log('You are at a waterfall when all of a sudden, a crazy blue kangaroo in a straight-jacket comes bouncing in and attacks you!');
     while (true) {
         let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log('\nRipper Roo bounces to square' + bossAttack + '.');
+        console.log('\nRipper Roo bounces to square ' + bossAttack + '.');
         let yourPosition = BLIB.getNumber('\nWhat tile are you on before Ripper Roo pounces on you? ');
-        if (yourPosition > min || yourPosition < max) {
+        if (yourPosition < min || yourPosition > max) {
+            console.clear();
             console.log('\nOh no, Ripper Roo pounced you!');
             yourHP -= bossHit;
-            console.log('Your HP: ' + yourHP + '')
+            console.log('Your HP: ' + yourHP + '');
         }
-
+        let bombPosition = Math.floor(Math.random() * (max - min + 1)) + min;
+        console.clear();
+        console.log('\nThe bomb is on tile ' + bombPosition + '');
+        if (yourPosition === bombPosition) {
+            console.log('\nYou kick the bomb at Ripper Roo ');
+            bossHealth -= bomb;
+            console.log('Ripper Roo: ' + bossHealth + '');
+        }
+        if (bossAttack === bombPosition) {
+            console.clear();
+            console.log('\nRipper Roo foolishly lands on a dangerous platform! ');
+            bossHealth -= bomb;
+            console.log('Ripper Roo: ' + bossHealth + '');
+        }
         if (yourHP === defeat) {
             console.log('\nGame Over ');
             return bossMenu();
         }
-
         if (bossHealth === defeat) {
             console.log('\nYou defeated Ripper Roo, you leap over to the other side while the knocked-out Ripper Roo lies motionless on the platform ');
             return bossMenu();
@@ -129,7 +144,56 @@ function fightRipperRoo() {
 }
 
 function fightKoalaKong() {
+    console.clear();
     let bossHealth = 4;
+    let min = Math.ceil(1);
+    let max = Math.floor(6);
+    let rock = 1;
+    console.log('\nYou travel to the caverns when a rail path for minecarts stand between you and a muscular koala with yellow pants taunts you, gorging you to fight! ');
+    while(true) {
+        let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
+        console.log('\nKoala Kong takes a giant boulder and chucks it at you at position ' + bossAttack + '');
+        let yourPosition = BLIB.getNumber('\nWhere are you before the rock hits you? ');
+        if (yourPosition < min || yourPosition > max) {
+            console.clear();
+            console.log('Oh no! The rock hits you! ');
+            yourHP -= rock;
+            console.log('Your HP: ' + yourHP + '');
+        }
+        if (yourPosition === bossAttack) {
+            console.clear();
+            console.log('Oh no, the rock hit you! ');
+            yourHP -= rock;
+            console.log('Your HP: ' + yourHP + '');
+        }
+        console.log('Oh no! TNT Crates are falling! ');
+        let cratePosition1 = Math.floor(Math.random() * (max - min + 1)) + min;
+        let cratePosition2 = Math.floor(Math.random() * (max - min + 1)) + min;
+        if (yourPosition === cratePosition1 || yourPosition === cratePosition2) {
+            console.log('You got hit by the TNT! ');
+            yourHP -= bossHit;
+            console.log('Your HP: ' + yourHP + '');
+        }
+        console.log('Koala throws his last rock at you before taunting you by flexing his furry body, get him!');
+        let rockPosition = Math.floor(Math.random() * (max - min + 1)) + min;
+        console.log('\nIt lands at position ' + rockPosition + '');
+        let yourCounter = BLIB.getNumber('\nWhere will you move? ');
+        if (rockPosition === yourCounter) {
+            console.clear();
+            console.log('\nYou spin the rock back at him! Make him pay for taunting you! ');
+            bossHealth -= rock;
+            console.log('Koala Kong: ' + bossHealth + '');
+        }
+        if (yourHP === defeat) {
+            console.clear();
+            console.log('\nGame Over');
+            return bossMenu();
+        }
+        if (bossHealth === defeat) {
+            console.log('\nYou defeated Koala Kong! He jumps on the railing to intimidate you before a minecart rolls by and carries him away! ');
+            return bossMenu();
+        }
+    }
 }
 
 function fightPinstripe() {
