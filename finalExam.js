@@ -51,6 +51,11 @@ function bossMenu() {
     }
 }
 
+/**
+ * @method
+ * @desc Papu Papu boss fight mutator
+ * @returns {void}
+ */
 function fightPapuPapu() {
     console.clear();
     let bossHealth = 5;
@@ -69,6 +74,7 @@ function fightPapuPapu() {
         }
         if (yourPosition === bossAttack) {
             console.clear();
+            console.log('\nOh no! You got hit by his staff!');
             yourHP -= bossHit;
             console.log('\nYour HP: ' + yourHP + '');
         }
@@ -101,6 +107,11 @@ function fightPapuPapu() {
     }
 }
 
+/**
+ * @method
+ * @desc Ripper Roo boss fight mutator
+ * @returns {void}
+ */
 function fightRipperRoo() {
     console.clear();
     let bossHealth = 3;
@@ -143,6 +154,11 @@ function fightRipperRoo() {
     }
 }
 
+/**
+ * @method
+ * @desc Koala Kong boss fight mutator
+ * @returns {void}
+ */
 function fightKoalaKong() {
     console.clear();
     let bossHealth = 4;
@@ -196,18 +212,59 @@ function fightKoalaKong() {
     }
 }
 
+/**
+ * @method
+ * @desc Pinstripe Potoroo boss fight mutator
+ * @returns {void}
+ */
 function fightPinstripe() {
     let bossHealth = 6;
+    console.clear();
+    let min = math.ceil(1);
+    let max = math.floor(3);
+    console.log('You arrive at Dr.Cortex Power Plant, where you are attacked by his bodyguard and his tommy gun! ');
+    while(true) {
+        let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
+        console.log('Pinstrip begins to fire his tommy gun at you at position ' + bossAttack + '!');
+        let yourPosition = BLIB.getNumber('\nWhere are you when he shoots at you? [0= Stand still][1= The chair][2= The table][');
+        if (yourPosition === 0) {
+            console.clear();
+            console.log('\nYou choose to stand still!');
+            console.log('\nOh no, he shot you!');
+            yourHP -= bossHit;
+            console.log('\nYour HP: ' + yourHP + '');
+        }
+        if (yourPosition === 1) {
+            
+        }
+    }
+
+
 }
 
+/**
+ * @method
+ * @desc Dr.N Brio boss fight mutator
+ * @returns {void}
+ */
 function fightNBrio() {
     let bossHealth = 10;
 }
 
+/**
+ * @method
+ * @desc Dr N.Cortex boss fight mutator
+ * @returns {void}
+ */
 function fightDrNCortex() {
     let bossHealth = 5;
 }
 
+/**
+ * @method
+ * @desc Boss record view mutator
+ * @returns {void}
+ */
 function viewBossRecord() {
 
 }
