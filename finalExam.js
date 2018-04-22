@@ -61,7 +61,7 @@ function fightPapuPapu() {
         let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
         console.log('\nPapu Papu whacks his staff on tile ' + bossAttack + "!");
         let yourPosition = BLIB.getNumber('\nWhere are you before he attacks? ');
-        if (yourPosition < 1 || yourPosition > 30) {
+        if (yourPosition < min || yourPosition > max) {
             console.log('\nNo! Papu Papu hits you! ');
             yourHP -= bossHit;
             console.log('Your HP: ' + yourHP + '');
@@ -114,6 +114,11 @@ function fightRipperRoo() {
             console.log('\nOh no, Ripper Roo pounced you!');
             yourHP -= bossHit;
             console.log('Your HP: ' + yourHP + '')
+        }
+
+        if (yourHP === defeat) {
+            console.log('\nGame Over ');
+            return bossMenu();
         }
 
         if (bossHealth === defeat) {
