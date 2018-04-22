@@ -235,7 +235,7 @@ function fightPinstripe() {
             console.log('\nYour HP: ' + yourHP + '');
         }
         if (yourPosition === 1) {
-            
+
         }
     }
 
