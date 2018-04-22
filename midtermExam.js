@@ -143,7 +143,7 @@ function runLogout() {
 function activateATM() {
     if(!login) {
         runLogin();
-        return;
+        ret.urn;
     }
     ATMManager();
 }

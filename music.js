@@ -131,6 +131,10 @@ function purchaseMusic() {
     return happyTunes();
 }
 
+function chooseChar() {
+
+}
+
 function endProgram() {
     runProgram = 0;
 }
