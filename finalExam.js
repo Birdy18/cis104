@@ -8,10 +8,21 @@
 const IO = require('fs');
 const BLIB = require('./birdlib.js');
 const PROMPT = require('readline-sync');
+const BOSSES = ["Papu Papu", "Ripper Roo", "Koala Kong", "Pinstripe Potoroo", "Dr. N Brio", "Dr.Neo Cortex"];
 let yourHP = 3;
 let yourHit = 1;
 let bossHit = 1;
 let defeat = 0;
+
+class Boss {
+    constructor(name) {
+        this.name = name;
+        this.defeats = [];
+    }
+    toString() {
+        return `${this.name}: $${this.defeatCount()}`;
+    }
+}
 
 function main() {
     console.clear();
@@ -104,6 +115,7 @@ function fightPapuPapu() {
         }
         if (bossHealth === defeat) {
             console.log('\nYou defeated Papu Papu! You bounce on the unconcious Papu Papu s belly and escape his hut! ');
+            this.name[0] += defeatCount;
             return bossMenu();
         }
     }
@@ -224,10 +236,10 @@ function fightPinstripe() {
     console.clear();
     let min = Math.ceil(1);
     let max = Math.floor(3);
-    console.log('You arrive at Dr.Cortex Power Plant, where you are attacked by his bodyguard and his tommy gun! ');
+    console.log('\nYou arrive at Dr.Cortex Power Plant, where you are attacked by his bodyguard and his tommy gun! ');
     while (true) {
         let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log('Pinstripe begins to fire his tommy gun at you at position ' + bossAttack + '!');
+        console.log('\nPinstripe begins to fire his tommy gun at you at position ' + bossAttack + '!');
         let yourPosition = BLIB.getNumber('\nWhere are you when he shoots at you? [1= Stand still][2= The chair][3= The table] ');
         if (yourPosition === 1) {
             console.clear();
@@ -260,7 +272,7 @@ function fightPinstripe() {
                 console.clear();
                 console.log('\nYou chose to attack Pinstripe! ');
                 bossHealth -= yourHit;
-                console.log('Pinstripe Potoroo: ' + bossHealth + '');
+                console.log('\nPinstripe Potoroo: ' + bossHealth + '');
             }
         }
         if (yourPosition === 3) {
@@ -271,7 +283,7 @@ function fightPinstripe() {
                 console.clear();
                 console.log('\nOh on, you got hit! ');
                 yourHP -= bossHit;
-                console.log('Your HP: ' + yourHP + '');
+                console.log('\nYour HP: ' + yourHP + '');
             }
             if (duck1 === 1) {
                 console.clear();
@@ -290,6 +302,15 @@ function fightPinstripe() {
                 console.log('\nPinstripe Potoroo: ' + bossHealth + '');
             }
         }
+        if (yourHP === defeat) {
+            console.clear();
+            console.log('\nGame Over ');
+            return bossMenu();
+        }
+        if (bossHealth === defeat) {
+            console.clear();
+            console.log('\nYou defeated Pinstripe Potoroo, he spins around, his tommy gun goes off damaging the core of the power plant, shutting it down.  Pinstripe passes out from exhaustion while a lamp falls on him, knocking him out! ');
+        }
     }
 }
 
@@ -303,6 +324,10 @@ function fightNBrio() {
     console.clear();
     let min = Math.ceil(1);
     let max = Math.floor(20);
+    console.log('\nYou arrive at Cortex s Castle where you enter Dr. N Brio s lab.  N Brio is mixing his chemicals when he engages you in a fight! ');
+    while(true) {
+
+    }
 }
 
 /**

@@ -26,7 +26,7 @@ class MusicGenre {
         this.purchases = [];
     }
     toString() {
-        return this.name;
+        return `${this.name}: $${this.sumPurchases()}`;
     }
 
     sumPurchases() {
@@ -95,7 +95,7 @@ function happyTunes() {
 
 function seeTransaction() {
     for(let genre of genres) {
-        console.log(genre.display());
+        console.log(genre.toString());
     }
 }
 
