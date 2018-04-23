@@ -14,6 +14,7 @@ let bossHit = 1;
 let defeat = 0;
 
 function main() {
+    console.clear();
     bossMenu();
 }
 
@@ -89,6 +90,7 @@ function fightPapuPapu() {
         }
         if (choice === 1) {
             console.clear();
+            console.log('\nYou chose to attack! ');
             bossHealth -= yourHit;
             console.log('\nPapu Papu: ' + bossHealth + '');
         }
@@ -220,26 +222,75 @@ function fightKoalaKong() {
 function fightPinstripe() {
     let bossHealth = 6;
     console.clear();
-    let min = math.ceil(1);
-    let max = math.floor(3);
+    let min = Math.ceil(1);
+    let max = Math.floor(3);
     console.log('You arrive at Dr.Cortex Power Plant, where you are attacked by his bodyguard and his tommy gun! ');
-    while(true) {
+    while (true) {
         let bossAttack = Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log('Pinstrip begins to fire his tommy gun at you at position ' + bossAttack + '!');
-        let yourPosition = BLIB.getNumber('\nWhere are you when he shoots at you? [0= Stand still][1= The chair][2= The table][');
-        if (yourPosition === 0) {
+        console.log('Pinstripe begins to fire his tommy gun at you at position ' + bossAttack + '!');
+        let yourPosition = BLIB.getNumber('\nWhere are you when he shoots at you? [1= Stand still][2= The chair][3= The table] ');
+        if (yourPosition === 1) {
             console.clear();
             console.log('\nYou choose to stand still!');
             console.log('\nOh no, he shot you!');
             yourHP -= bossHit;
             console.log('\nYour HP: ' + yourHP + '');
         }
-        if (yourPosition === 1) {
-
+        if (yourPosition === 2) {
+            console.clear();
+            console.log('\nYou choose to go near the chair! ');
+            let duck = BLIB.getNumber('\nDo you want to duck? [0=no][1=yes] ');
+            if (yourPosition === bossAttack && duck === 0) {
+                console.clear();
+                console.log('\nOh on, you got hit! ');
+                yourHP -= bossHit;
+                console.log('\nYour HP: ' + yourHP + '');
+            }
+            if (duck === 1) {
+                console.clear();
+                console.log('\nYou ducked to avoid gunfire! ');
+            }
+            console.log('\nLook, Pinstripe s gun is malfunctioning! ');
+            let counter = BLIB.getNumber('\nWhat do you want to do? [0=evade][1=attack]');
+            if (counter === 0) {
+                console.clear();
+                console.log('\nYou chose to evade! ');
+            }
+            if (counter === 1) {
+                console.clear();
+                console.log('\nYou chose to attack Pinstripe! ');
+                bossHealth -= yourHit;
+                console.log('Pinstripe Potoroo: ' + bossHealth + '');
+            }
+        }
+        if (yourPosition === 3) {
+            console.clear();
+            console.log('\nYou choose to go near the table! ');
+            let duck1 = BLIB.getNumber('\nDo you want to duck? [0=no][1=yes] ');
+            if (duck1 === 0) {
+                console.clear();
+                console.log('\nOh on, you got hit! ');
+                yourHP -= bossHit;
+                console.log('Your HP: ' + yourHP + '');
+            }
+            if (duck1 === 1) {
+                console.clear();
+                console.log('\nYou ducked to avoid gunfire! ');
+            }
+            console.log('\nLook, Pinstripe s gun is malfunctioning! ');
+            let counter = BLIB.getNumber('\nWhat do you want to do? [0=evade][1=attack]');
+            if (counter === 0) {
+                console.clear();
+                console.log('\nYou chose to evade! ');
+            }
+            if (counter === 1) {
+                console.clear();
+                console.log('\nYou chose to attack Pinstripe! ');
+                bossHealth -= yourHit;
+                console.log('\nPinstripe Potoroo: ' + bossHealth + '');
+            }
         }
     }
-
-
 }
 
 /**
@@ -249,6 +300,9 @@ function fightPinstripe() {
  */
 function fightNBrio() {
     let bossHealth = 10;
+    console.clear();
+    let min = Math.ceil(1);
+    let max = Math.floor(20);
 }
 
 /**
