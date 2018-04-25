@@ -9,17 +9,32 @@ const IO = require('fs');
 const BLIB = require('./birdlib.js');
 const PROMPT = require('readline-sync');
 
-const BROTHERS_DATA = [['Mario', 20, 24, 15, 'Hammer'], ['Luigi', 31, 18, 17, 'Thunder Hand']];
+const BROTHERS_DATA = [['Mario', 33, 40, 22, 'Hammer'], ['Luigi', 54, 29, 26, 'Thunder Hand'], ['Trevor', 50, 34, 26, 'Punch']];
 const ENEMY_DATA = new Map()
     .set('Goomba', ['Goomba', 10, 18, 10, "Headbonk"])
     .set('Koopa Troopa', ['Koopa Troopa', 15, 15, 13, "Shell Dash"])
     .set('Pokey',['Pokey', 30, 12, 14, "Spike Topple"])
-    .set('Bowser',['Bowser', 54, 22, 22, "FireBall"]);
+    .set('Cheep Cheep', ['Cheep Cheep', 20, 12, 18, "Fishy Tackle"])
+    .set('Urchin', ['Urchin',5, 30, 30, "Urchin Launchin!"])
+    .set('Blooper', ['Blooper',40, 17, 15, "Ink Shot"])
+    .set('Eel', ['Eel', 25, 33, 13, "Big Bite"])
+    .set('Fire Bro', ['Fire Bro', 23, 31, 13, "Fireball"])
+    .set('Boomerang Bro', ['Boomerang Bro', 45, 17, 15, "Boomerang Throw"])
+    .set('Hammer Bro', ['Hammer Bro', 33, 25, 22, 'Hammer Throw'])
+    .set('Bowser',['Bowser', 54, 22, 22, "FireBall"])
+    .set('Dry Bowser', ['Dry Bowser', 110, 36, 30, "Bone Throw"]);
 
 const SCENARIOS = new Map()
     .set(1, ['Goomba', 'Goomba', 'Koopa Troopa'])
     .set(2, ['Goomba', 'Koopa Troopa', 'Pokey'])
-    .set(3, ['Koopa Troopa', 'Koopa Troopa', 'Bowser']);
+    .set(3, ['Koopa Troopa', 'Koopa Troopa', 'Bowser'])
+    .set(4, ['Goomba', 'Koopa Troopa', 'Pokey', 'Bowser'])
+    .set(5, ['Cheep Cheep', 'Blooper'])
+    .set(6, ['Urchin', 'Eel'])
+    .set(7, ['Hammer Bro', 'Fire Bro'])
+    .set(8, ['Boomerang Bro'])
+    .set(9, ['Hammer Bro', 'Fire Bro', 'Boomerang Bro'])
+    .set(10,['Dry Bowser']);
 
 let runRPG = 1;
 let heroes = [];
@@ -182,6 +197,7 @@ function pickScenario() {
 }
 
 function saveData() {
+    let name = BLIB.getKeyboard('\nPlease enter your name! ');
     IO.writeFileSync('mario.sav', beaten.join(' '), 'utf8');
     console.log("Game saved!");
 }
@@ -233,7 +249,7 @@ function runScenario(scenario) {
         }
 
         console.log("Enemies turn!");
-        clash = runTurn(enemies, heroes, "steps up against the heroes!");
+        clash = runTurn(enemies, heroes, "steps up against the heroes!" );
         if(clash[0]) {
             console.log("The heroes lose!");
             results = false;
