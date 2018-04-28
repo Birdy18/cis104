@@ -9,7 +9,7 @@ const IO = require('fs');
 const BLIB = require('./birdlib.js');
 const PROMPT = require('readline-sync');
 
-const BROTHERS_DATA = [['Mario', 33, 40, 22, 'Hammer'], ['Luigi', 54, 29, 26, 'Thunder Hand'], ['Trevor', 50, 34, 26, 'Punch']];
+const BROTHERS_DATA = [['Mario', 35, 43, 24, 'Hammer'], ['Luigi', 59, 32, 29, 'Thunder Hand'], ['Trevor', 52, 36, 28, 'Punch'], ['Rocky', 50, 30, 35, 'Butt Bash']];
 const ENEMY_DATA = new Map()
     .set('Goomba', ['Goomba', 10, 18, 10, "Headbonk"])
     .set('Koopa Troopa', ['Koopa Troopa', 15, 15, 13, "Shell Dash"])
@@ -197,7 +197,6 @@ function pickScenario() {
 }
 
 function saveData() {
-    let name = BLIB.getKeyboard('\nPlease enter your name! ');
     IO.writeFileSync('mario.sav', beaten.join(' '), 'utf8');
     console.log("Game saved!");
 }
