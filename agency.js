@@ -77,7 +77,7 @@ function jobCheck() {
     for (let i = 0; i < masterFile.length; i++) {
         for (let j = 0; j < newTransactions.length; j++) {
             if (masterFile[i][0] === newTransactions[j][0]) {
-
+                jobs.push(masterFile[i][0]);
             }
         }
     }

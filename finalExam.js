@@ -135,6 +135,11 @@ function main() {
 
 main();
 
+/**
+ * @returns
+ * @desc Menu activation mutator
+ * @returns {null}
+ */
 function runMenu() {
     console.log('A: Choose Scenario');
     console.log('B: Save Data');
@@ -160,6 +165,11 @@ function runMenu() {
     }
 }
 
+/**
+ * @method
+ * @desc Choosing scenario mutator
+ * @returns {null}
+ */
 function pickScenario() {
     let scenario_ids = Array.from(SCENARIOS.keys())
     scenario_ids.sort((a, b) => {return a - b});
@@ -196,11 +206,21 @@ function pickScenario() {
 
 }
 
+/**
+ * @method
+ * @desc Saving data mutator
+ * @returns {null}
+ */
 function saveData() {
     IO.writeFileSync('mario.sav', beaten.join(' '), 'utf8');
     console.log("Game saved!");
 }
 
+/**
+ * @method
+ * @desc Loading data mutator
+ * @returns {null}
+ */
 function loadData() {
     beaten = [];
     let loadFile = IO.readFileSync('mario.sav', 'utf8');
@@ -210,6 +230,12 @@ function loadData() {
     }
 }
 
+/**
+ * @method
+ * @param scenario
+ * @desc This activates all of the data of both enemies and heroes as well as the battling involved
+ * @returns {*}
+ */
 // This function returns True if the Heroes win, False if they lose.
 function runScenario(scenario) {
     // Create the Mario Bros heroes for player!
@@ -265,7 +291,14 @@ function runScenario(scenario) {
 // Return true if the actors (the ones taking their turn) beat the victims. Return False if no conclusion.
 // We return copies of the input because .filter() does not change an array, it creates a new array. So we have to
 // return the data that changed.
-
+/**
+ * @method
+ * @param actors
+ * @param victims
+ * @param description
+ * @desc This runs the turns and what's going on in those turns
+ * @returns {*[]}
+ */
 function runTurn(actors, victims, description) {
     for(let actor of actors) {
         console.log(`${actor.name} ${description}! Remaining HP: ${actor.health}`);
