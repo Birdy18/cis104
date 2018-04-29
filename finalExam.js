@@ -21,6 +21,13 @@ const ENEMY_DATA = new Map()
     .set('Fire Bro', ['Fire Bro', 23, 31, 13, "Fireball"])
     .set('Boomerang Bro', ['Boomerang Bro', 45, 17, 15, "Boomerang Throw"])
     .set('Hammer Bro', ['Hammer Bro', 33, 25, 22, 'Hammer Throw'])
+    .set('Larry Koopa', ['Larry Koopa', 44, 27, 21, "Fireball Tennis"])
+    .set('Iggy Koopa', ['Iggy Koopa', 51, 23, 23, "Wand Shot"])
+    .set('Morton Koopa', ['Morton Koopa', 42, 33, 30, "Ram"])
+    .set('Wendy Koopa', ['Wendy Koopa', 33, 28, 20, "Ring Shot"])
+    .set('Roy Koopa', ['Roy Koopa', 55, 35, 25, "Ram"])
+    .set('Lemmy Koopa', ['Lemmy Koopa', 30, 33, 19, "Fireball"])
+    .set('Ludwig von Koopa', ['Ludwig von Koopa', 45, 35, 24, "Wand Shot"])
     .set('Bowser',['Bowser', 54, 22, 22, "FireBall"])
     .set('Dry Bowser', ['Dry Bowser', 110, 36, 30, "Bone Throw"]);
 
@@ -34,7 +41,10 @@ const SCENARIOS = new Map()
     .set(7, ['Hammer Bro', 'Fire Bro'])
     .set(8, ['Boomerang Bro'])
     .set(9, ['Hammer Bro', 'Fire Bro', 'Boomerang Bro'])
-    .set(10,['Dry Bowser']);
+    .set(10,['Larry Koopa', 'Iggy Koopa'])
+    .set(11,['Morton Koopa', 'Wendy Koopa'])
+    .set(12,['Roy Koopa', 'Lemmy Koopa', 'Ludwig von Koopa'])
+    .set(13,['Dry Bowser']);
 
 let runRPG = 1;
 let heroes = [];
@@ -64,9 +74,9 @@ class Fighter {
 
     doAttack(target) {
         let results = target.getHit(this);
-        console.log(`${this.name} strikes ${target.name} with ${this.weapon} for ${results} damage!`);
+        console.log(`\n${this.name} strikes ${target.name} with ${this.weapon} for ${results} damage!`);
         if(target.health < 1) {
-            console.log(`${target.name} is defeated! Kapow!`);
+            console.log(`\n${target.name} is defeated! Kapow!`);
         }
         // This function has to call target.getHit(this).
         // it should also display results of attack. Make it sound cool.
@@ -82,9 +92,9 @@ class Hero extends Fighter {
     onTurn(targets) {
         // implement choices here!
         // Do I attack? do I defend? Throw in an extra number! match it aginst 1-5 for critical hits or etc.
-        console.log('------- Enemies -------');
+        console.log('\n------- Enemies -------');
         for (let i = 0; i < targets.length; i++) {
-            console.log(`${i+1}: ${targets[i].name} [Health: ${targets[i].health}]`);
+            console.log(`\n${i+1}: ${targets[i].name} [Health: ${targets[i].health}]`);
         }
         let target;
         while(!target) {
@@ -93,7 +103,7 @@ class Hero extends Fighter {
                 target = targets[choice-1];
             }
             else {
-                console.log("Not a valid target! They are numbered in order.")
+                console.log("\nNot a valid target! They are numbered in order.")
             }
         }
 
@@ -198,10 +208,10 @@ function pickScenario() {
         // If the heroes win...
         // Add the scenario ID to beaten.
         beaten.push(numChoice);
-        console.log("Don't forget to save!");
+        console.log("\nDon't forget to save!");
     }
     else {
-        console.log("Better luck next time.");
+        console.log("\nBetter luck next time.");
     }
 
 }
@@ -213,7 +223,7 @@ function pickScenario() {
  */
 function saveData() {
     IO.writeFileSync('mario.sav', beaten.join(' '), 'utf8');
-    console.log("Game saved!");
+    console.log("\nGame saved!");
 }
 
 /**
@@ -228,6 +238,7 @@ function loadData() {
     for (let id of data) {
         beaten.push(Number(id));
     }
+    console.log("\nGame loaded!")
 }
 
 /**
@@ -260,12 +271,12 @@ function runScenario(scenario) {
 
     while(true) {
         // First the heroes go.
-        console.log("Heroes Turn!");
+        console.log("\nHeroes Turn!");
 
 
         clash = runTurn(heroes, enemies, "steps up to the plate!");
         if(clash[0]) {
-            console.log("The heroes win!");
+            console.log("\nThe heroes win!");
             results = true;
             break;
         }
@@ -273,10 +284,10 @@ function runScenario(scenario) {
             enemies = clash[1];
         }
 
-        console.log("Enemies turn!");
+        console.log("\nEnemies turn!");
         clash = runTurn(enemies, heroes, "steps up against the heroes!" );
         if(clash[0]) {
-            console.log("The heroes lose!");
+            console.log("\nThe heroes lose!");
             results = false;
             break;
         }
