@@ -44,6 +44,11 @@ function loadTransactionFile() {
     }
 }
 
+/**
+ * @method
+ * @desc Master file mutator
+ * @returns {null}
+ */
 function writeMasterFile() {
     for (let i = 0; i < masterFile.length; i++) {
         if (masterFile[i]) {
@@ -62,6 +67,11 @@ function writeMasterFile() {
     IO.renameSync(`Agency_data/dataX.csv`, `Agency_data/agency_data.csv`);
 }
 
+/**
+ * @method
+ * @desc This calculates funds and transfers them to the other file
+ * @returns {null}
+ */
 function calculateFunds() {
     for (let i = 0; i < masterFile.length; i++) {
         for (let j = 0; j < newTransactions.length; j++) {
@@ -73,6 +83,11 @@ function calculateFunds() {
     }
 }
 
+/**
+ * @method
+ * @desc Checks to see if the jobs are the same
+ * @returns {null}
+ */
 function jobCheck() {
     for (let i = 0; i < masterFile.length; i++) {
         for (let j = 0; j < newTransactions.length; j++) {
